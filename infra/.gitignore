@@ -1,0 +1,17 @@
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# Local scratch files used for manual AWS testing (not part of the app)
+sfn-input.json
+glue-args.json
+omics-params.json
+exec-history.json
+lf-*.json
+s3tables-*.json
+*.jar

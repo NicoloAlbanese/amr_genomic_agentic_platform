@@ -1,0 +1,9 @@
+{
+  "name": "amr-project",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-bedrock-agentcore": "^3.1053.0",
+    "esbuild": "^0.28.0"
+  }
+}

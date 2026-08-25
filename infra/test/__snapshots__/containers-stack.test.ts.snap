@@ -1,0 +1,1371 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ContainersStack matches snapshot 1`] = `
+{
+  "Outputs": {
+    "AgentRuntimeImageUri": {
+      "Export": {
+        "Name": "test-prefix-amr-agent-runtime-image-uri",
+      },
+      "Value": {
+        "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:d5ee948d6ad0c571959265a0a4046900177e1dcb19935701e556fb4bdb01b3d8",
+      },
+    },
+    "AgentRuntimeRepoUri": {
+      "Export": {
+        "Name": "test-prefix-amr-agent-runtime-repo-uri",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::Select": [
+                4,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "AgentRuntimerepo02C20977",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".dkr.ecr.",
+            {
+              "Fn::Select": [
+                3,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "AgentRuntimerepo02C20977",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "AgentRuntimerepo02C20977",
+            },
+          ],
+        ],
+      },
+    },
+    "EcrDigestsParamPath": {
+      "Export": {
+        "Name": "test-prefix-amr-ecr-digests-param-path",
+      },
+      "Value": "/test-prefix/amr/ecr/digests",
+    },
+    "FastpSkesaImageUri": {
+      "Export": {
+        "Name": "test-prefix-amr-fastp-skesa-image-uri",
+      },
+      "Value": {
+        "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:c6180d78693817b41b1cad7859783a346283dd26ba45ed78c4f99910bd371b7e",
+      },
+    },
+    "FastpSkesaRepoUri": {
+      "Export": {
+        "Name": "test-prefix-amr-fastp-skesa-repo-uri",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::Select": [
+                4,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "FastpSkesarepo11B04746",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".dkr.ecr.",
+            {
+              "Fn::Select": [
+                3,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "FastpSkesarepo11B04746",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "FastpSkesarepo11B04746",
+            },
+          ],
+        ],
+      },
+    },
+    "FuncscanImageUri": {
+      "Export": {
+        "Name": "test-prefix-amr-funcscan-image-uri",
+      },
+      "Value": {
+        "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:abce2fbbcb5f4603511f85b339dbdee76d5ff3014b04ad05a3112e313cee82b3",
+      },
+    },
+    "FuncscanRepoUri": {
+      "Export": {
+        "Name": "test-prefix-amr-funcscan-repo-uri",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::Select": [
+                4,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "Funcscanrepo686531D1",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".dkr.ecr.",
+            {
+              "Fn::Select": [
+                3,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "Funcscanrepo686531D1",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "Funcscanrepo686531D1",
+            },
+          ],
+        ],
+      },
+    },
+    "HamronizationImageUri": {
+      "Export": {
+        "Name": "test-prefix-amr-hamronization-image-uri",
+      },
+      "Value": {
+        "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:b20a10319ef7c5f12fd04ea29a16fba026b8dc5db6e2b66ded2d660b889b7aa2",
+      },
+    },
+    "HamronizationRepoUri": {
+      "Export": {
+        "Name": "test-prefix-amr-hamronization-repo-uri",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::Select": [
+                4,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "Hamronizationrepo441AD33B",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".dkr.ecr.",
+            {
+              "Fn::Select": [
+                3,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "Hamronizationrepo441AD33B",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "Hamronizationrepo441AD33B",
+            },
+          ],
+        ],
+      },
+    },
+    "SraToolsImageUri": {
+      "Export": {
+        "Name": "test-prefix-amr-sra-tools-image-uri",
+      },
+      "Value": {
+        "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:f1d8659692ac9f67d8ef5b979fdc55742b400807871d4e0c97ae77add0a74e9d",
+      },
+    },
+    "SraToolsRepoUri": {
+      "Export": {
+        "Name": "test-prefix-amr-sra-tools-repo-uri",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::Select": [
+                4,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "SraToolsrepoA8C2B2F1",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".dkr.ecr.",
+            {
+              "Fn::Select": [
+                3,
+                {
+                  "Fn::Split": [
+                    ":",
+                    {
+                      "Fn::GetAtt": [
+                        "SraToolsrepoA8C2B2F1",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "SraToolsrepoA8C2B2F1",
+            },
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "AgentRuntimerepo02C20977": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "EncryptionConfiguration": {
+          "EncryptionType": "KMS",
+          "KmsKey": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        },
+        "ImageScanningConfiguration": {
+          "ScanOnPush": true,
+        },
+        "ImageTagMutability": "IMMUTABLE",
+        "LifecyclePolicy": {
+          "LifecyclePolicyText": "{"rules":[{"rulePriority":1,"description":"Expire untagged images after 1 day","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countNumber":1,"countUnit":"days"},"action":{"type":"expire"}},{"rulePriority":2,"description":"Keep last 10 tagged images","selection":{"tagStatus":"tagged","tagPrefixList":["run-"],"countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}",
+        },
+        "RepositoryName": "test-prefix-amr-agent-runtime",
+        "RepositoryPolicyText": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": "123456789012",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "omics.amazonaws.com",
+              },
+              "Sid": "AllowHealthOmicsPull",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::ECR::Repository",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB28EAD8E4": {
+      "DependsOn": [
+        "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8",
+        "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "6e52cead4fbfca216929eca71022360dc93511e79a9056cc1b00222c1f39d0c7.zip",
+        },
+        "Description": "Custom resource handler for copying Docker images between docker registries.",
+        "Handler": "bootstrap",
+        "MemorySize": 512,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491",
+            "Arn",
+          ],
+        },
+        "Runtime": "provided.al2023",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetRepositoryPolicy",
+                "ecr:DescribeRepositories",
+                "ecr:ListImages",
+                "ecr:DescribeImages",
+                "ecr:BatchGetImage",
+                "ecr:ListTagsForResource",
+                "ecr:DescribeImageScanFindings",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload",
+                "ecr:PutImage",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8",
+        "Roles": [
+          {
+            "Ref": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DigestFetcherFnB6705EA2": {
+      "DependsOn": [
+        "DigestFetcherRole1671487C",
+      ],
+      "Properties": {
+        "Code": {
+          "ZipFile": "
+'use strict';
+const { ECRClient, DescribeImagesCommand } = require('@aws-sdk/client-ecr');
+const { SSMClient, PutParameterCommand, DeleteParameterCommand } = require('@aws-sdk/client-ssm');
+const https = require('https');
+
+const ecrClient = new ECRClient({ region: process.env.AWS_REGION });
+const ssmClient = new SSMClient({ region: process.env.AWS_REGION });
+
+const sendCfnResponse = (event, context, status, data, reason) => {
+  const body = JSON.stringify({
+    Status: status,
+    Reason: reason || (status === 'FAILED' ? 'See CloudWatch logs for details' : 'OK'),
+    PhysicalResourceId: event.PhysicalResourceId || context.logStreamName,
+    StackId: event.StackId,
+    RequestId: event.RequestId,
+    LogicalResourceId: event.LogicalResourceId,
+    Data: data || {},
+  });
+
+  return new Promise((resolve, reject) => {
+    try {
+      const parsedUrl = new URL(event.ResponseURL);
+      const options = {
+        hostname: parsedUrl.hostname,
+        port: 443,
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: 'PUT',
+        headers: { 'Content-Type': '', 'Content-Length': Buffer.byteLength(body) },
+      };
+      const req = https.request(options, (res) => {
+        console.log('CFN response status:', res.statusCode);
+        resolve();
+      });
+      req.on('error', (err) => {
+        console.error('CFN response error:', err);
+        reject(err);
+      });
+      req.write(body);
+      req.end();
+    } catch (e) {
+      console.error('sendCfnResponse error:', e);
+      reject(e);
+    }
+  });
+};
+
+exports.handler = async (event, context) => {
+  console.log('Event:', JSON.stringify(event));
+  const props = event.ResourceProperties;
+
+  try {
+    if (event.RequestType === 'Delete') {
+      const names = JSON.parse(props.ImageNames || '[]');
+      for (const name of names) {
+        try {
+          await ssmClient.send(new DeleteParameterCommand({
+            Name: props.ParamNamespace + '/ecr/digests/' + name,
+          }));
+          console.log('Deleted digest param for', name);
+        } catch (deleteErr) {
+          // Non-fatal: param may not exist yet
+          console.log('Delete param error (non-fatal) for', name, ':', deleteErr.message);
+        }
+      }
+      await sendCfnResponse(event, context, 'SUCCESS', {}, 'Digests cleaned up');
+      return;
+    }
+
+    const images = JSON.parse(props.Images || '[]');
+    const results = {};
+    const errors = [];
+
+    for (const img of images) {
+      try {
+        // imageUri format: <account>.dkr.ecr.<region>.amazonaws.com/<repo>:<tag>
+        const uriParts = img.imageUri.split('/');
+        const repoAndTag = uriParts.slice(1).join('/');
+        const colonIdx = repoAndTag.lastIndexOf(':');
+        if (colonIdx === -1) {
+          throw new Error('Cannot parse imageUri: ' + img.imageUri);
+        }
+        const repoName = repoAndTag.substring(0, colonIdx);
+        const imageTag = repoAndTag.substring(colonIdx + 1);
+
+        const response = await ecrClient.send(new DescribeImagesCommand({
+          repositoryName: repoName,
+          imageIds: [{ imageTag }],
+        }));
+
+        const imageDetail = response.imageDetails && response.imageDetails[0];
+        const digest = imageDetail && imageDetail.imageDigest;
+
+        if (!digest) {
+          throw new Error('No digest found in DescribeImages response for ' + img.name);
+        }
+
+        await ssmClient.send(new PutParameterCommand({
+          Name: props.ParamNamespace + '/ecr/digests/' + img.name,
+          Value: digest,
+          Type: 'String',
+          Description: 'SHA256 digest for ' + img.name + ' (run: ' + props.RunId + ')',
+          Overwrite: true,
+        }));
+
+        results[img.name] = digest;
+        console.log('Stored digest for', img.name, ':', digest);
+
+      } catch (imgErr) {
+        const msg = imgErr && imgErr.message ? imgErr.message : String(imgErr);
+        errors.push(img.name + ': ' + msg);
+        console.error('Error processing image', img.name, ':', msg);
+      }
+    }
+
+    if (errors.length === images.length && images.length > 0) {
+      // All images failed — report failure
+      await sendCfnResponse(event, context, 'FAILED', results, errors.join('; '));
+    } else {
+      // Partial or full success
+      if (errors.length > 0) {
+        console.warn('Some images failed to process:', errors.join('; '));
+      }
+      await sendCfnResponse(event, context, 'SUCCESS', results);
+    }
+
+  } catch (fatalErr) {
+    const msg = fatalErr && fatalErr.message ? fatalErr.message : String(fatalErr);
+    console.error('Fatal error in digest fetcher:', msg);
+    try {
+      await sendCfnResponse(event, context, 'FAILED', {}, msg);
+    } catch (cfnErr) {
+      console.error('Failed to send CFN FAILED response:', cfnErr);
+    }
+  }
+};
+",
+        },
+        "Description": "test-prefix AMR: fetch ECR image digests and store in SSM",
+        "FunctionName": "test-prefix-amr-digest-fetcher",
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "DigestFetcherRole1671487C",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 300,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "DigestFetcherProviderframeworkonEvent98DF049D": {
+      "DependsOn": [
+        "DigestFetcherProviderframeworkonEventServiceRoleDefaultPolicyE3E5835D",
+        "DigestFetcherProviderframeworkonEventServiceRoleF5A7339C",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57.zip",
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (TestContainersStack/DigestFetcherProvider)",
+        "Environment": {
+          "Variables": {
+            "USER_ON_EVENT_FUNCTION_ARN": {
+              "Fn::GetAtt": [
+                "DigestFetcherFnB6705EA2",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "Handler": "framework.onEvent",
+        "LoggingConfig": {
+          "ApplicationLogLevel": "FATAL",
+          "LogFormat": "JSON",
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DigestFetcherProviderframeworkonEventServiceRoleF5A7339C",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "DigestFetcherProviderframeworkonEventServiceRoleDefaultPolicyE3E5835D": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "DigestFetcherFnB6705EA2",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DigestFetcherFnB6705EA2",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "lambda:GetFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "DigestFetcherFnB6705EA2",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DigestFetcherProviderframeworkonEventServiceRoleDefaultPolicyE3E5835D",
+        "Roles": [
+          {
+            "Ref": "DigestFetcherProviderframeworkonEventServiceRoleF5A7339C",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DigestFetcherProviderframeworkonEventServiceRoleF5A7339C": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "DigestFetcherResource": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "ForceUpdate": "test-run-id",
+        "ImageNames": "["sra-tools","fastp-skesa","funcscan","hamronization","agent-runtime"]",
+        "Images": {
+          "Fn::Join": [
+            "",
+            [
+              "[{"name":"sra-tools","imageUri":"",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:f1d8659692ac9f67d8ef5b979fdc55742b400807871d4e0c97ae77add0a74e9d",
+              },
+              ""},{"name":"fastp-skesa","imageUri":"",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:c6180d78693817b41b1cad7859783a346283dd26ba45ed78c4f99910bd371b7e",
+              },
+              ""},{"name":"funcscan","imageUri":"",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:abce2fbbcb5f4603511f85b339dbdee76d5ff3014b04ad05a3112e313cee82b3",
+              },
+              ""},{"name":"hamronization","imageUri":"",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:b20a10319ef7c5f12fd04ea29a16fba026b8dc5db6e2b66ded2d660b889b7aa2",
+              },
+              ""},{"name":"agent-runtime","imageUri":"",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:d5ee948d6ad0c571959265a0a4046900177e1dcb19935701e556fb4bdb01b3d8",
+              },
+              ""}]",
+            ],
+          ],
+        },
+        "ParamNamespace": "/test-prefix/amr",
+        "RunId": "test-run-id",
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "DigestFetcherProviderframeworkonEvent98DF049D",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DigestFetcherRole1671487C": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "ecr:GetAuthorizationToken",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                  "Sid": "EcrGetAuthToken",
+                },
+                {
+                  "Action": [
+                    "ecr:DescribeImages",
+                    "ecr:BatchGetImage",
+                    "ecr:ListImages",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "SraToolsrepoA8C2B2F1",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "FastpSkesarepo11B04746",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "Funcscanrepo686531D1",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "Hamronizationrepo441AD33B",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "AgentRuntimerepo02C20977",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                  "Sid": "EcrDescribeImages",
+                },
+                {
+                  "Action": [
+                    "ssm:PutParameter",
+                    "ssm:GetParameter",
+                    "ssm:DeleteParameter",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:ssm:us-west-2:123456789012:parameter/test-prefix/amr/ecr/digests/*",
+                  "Sid": "SsmPutDigests",
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+                  "Sid": "KmsForEcr",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "ecrAndSsmAccess",
+          },
+        ],
+        "RoleName": "test-prefix-amr-digest-fetcher",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "FastpSkesaImageCopyCustomResource7FB44D3D": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "DestImage": {
+          "Fn::Join": [
+            "",
+            [
+              "docker://",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "FastpSkesarepo11B04746",
+                          "Arn",
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              ".dkr.ecr.",
+              {
+                "Fn::Select": [
+                  3,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "FastpSkesarepo11B04746",
+                          "Arn",
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix",
+              },
+              "/",
+              {
+                "Ref": "FastpSkesarepo11B04746",
+              },
+              ":run-test-run-id",
+            ],
+          ],
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB28EAD8E4",
+            "Arn",
+          ],
+        },
+        "SrcImage": {
+          "Fn::Join": [
+            "",
+            [
+              "docker://",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:c6180d78693817b41b1cad7859783a346283dd26ba45ed78c4f99910bd371b7e",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "Custom::CDKECRDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "FastpSkesarepo11B04746": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "EncryptionConfiguration": {
+          "EncryptionType": "KMS",
+          "KmsKey": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        },
+        "ImageScanningConfiguration": {
+          "ScanOnPush": true,
+        },
+        "ImageTagMutability": "IMMUTABLE",
+        "LifecyclePolicy": {
+          "LifecyclePolicyText": "{"rules":[{"rulePriority":1,"description":"Expire untagged images after 1 day","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countNumber":1,"countUnit":"days"},"action":{"type":"expire"}},{"rulePriority":2,"description":"Keep last 10 tagged images","selection":{"tagStatus":"tagged","tagPrefixList":["run-"],"countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}",
+        },
+        "RepositoryName": "test-prefix-amr-fastp-skesa",
+        "RepositoryPolicyText": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": "123456789012",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "omics.amazonaws.com",
+              },
+              "Sid": "AllowHealthOmicsPull",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::ECR::Repository",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "FuncscanImageCopyCustomResourceA3AA7804": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "DestImage": {
+          "Fn::Join": [
+            "",
+            [
+              "docker://",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "Funcscanrepo686531D1",
+                          "Arn",
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              ".dkr.ecr.",
+              {
+                "Fn::Select": [
+                  3,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "Funcscanrepo686531D1",
+                          "Arn",
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix",
+              },
+              "/",
+              {
+                "Ref": "Funcscanrepo686531D1",
+              },
+              ":run-test-run-id",
+            ],
+          ],
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB28EAD8E4",
+            "Arn",
+          ],
+        },
+        "SrcImage": {
+          "Fn::Join": [
+            "",
+            [
+              "docker://",
+              {
+                "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:abce2fbbcb5f4603511f85b339dbdee76d5ff3014b04ad05a3112e313cee82b3",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "Custom::CDKECRDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "Funcscanrepo686531D1": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "EncryptionConfiguration": {
+          "EncryptionType": "KMS",
+          "KmsKey": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        },
+        "ImageScanningConfiguration": {
+          "ScanOnPush": true,
+        },
+        "ImageTagMutability": "IMMUTABLE",
+        "LifecyclePolicy": {
+          "LifecyclePolicyText": "{"rules":[{"rulePriority":1,"description":"Expire untagged images after 1 day","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countNumber":1,"countUnit":"days"},"action":{"type":"expire"}},{"rulePriority":2,"description":"Keep last 10 tagged images","selection":{"tagStatus":"tagged","tagPrefixList":["run-"],"countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}",
+        },
+        "RepositoryName": "test-prefix-amr-funcscan",
+        "RepositoryPolicyText": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": "123456789012",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "omics.amazonaws.com",
+              },
+              "Sid": "AllowHealthOmicsPull",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::ECR::Repository",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "Hamronizationrepo441AD33B": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "EncryptionConfiguration": {
+          "EncryptionType": "KMS",
+          "KmsKey": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        },
+        "ImageScanningConfiguration": {
+          "ScanOnPush": true,
+        },
+        "ImageTagMutability": "IMMUTABLE",
+        "LifecyclePolicy": {
+          "LifecyclePolicyText": "{"rules":[{"rulePriority":1,"description":"Expire untagged images after 1 day","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countNumber":1,"countUnit":"days"},"action":{"type":"expire"}},{"rulePriority":2,"description":"Keep last 10 tagged images","selection":{"tagStatus":"tagged","tagPrefixList":["run-"],"countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}",
+        },
+        "RepositoryName": "test-prefix-amr-hamronization",
+        "RepositoryPolicyText": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": "123456789012",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "omics.amazonaws.com",
+              },
+              "Sid": "AllowHealthOmicsPull",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::ECR::Repository",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "SraToolsrepoA8C2B2F1": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "EncryptionConfiguration": {
+          "EncryptionType": "KMS",
+          "KmsKey": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        },
+        "ImageScanningConfiguration": {
+          "ScanOnPush": true,
+        },
+        "ImageTagMutability": "IMMUTABLE",
+        "LifecyclePolicy": {
+          "LifecyclePolicyText": "{"rules":[{"rulePriority":1,"description":"Expire untagged images after 1 day","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countNumber":1,"countUnit":"days"},"action":{"type":"expire"}},{"rulePriority":2,"description":"Keep last 10 tagged images","selection":{"tagStatus":"tagged","tagPrefixList":["run-"],"countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}",
+        },
+        "RepositoryName": "test-prefix-amr-sra-tools",
+        "RepositoryPolicyText": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": "123456789012",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "omics.amazonaws.com",
+              },
+              "Sid": "AllowHealthOmicsPull",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::ECR::Repository",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "paramecragentruntime1E0071DF": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR image URI for agent-runtime (run: test-run-id)",
+        "Name": "/test-prefix/amr/ecr/image-uri/agent-runtime",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:d5ee948d6ad0c571959265a0a4046900177e1dcb19935701e556fb4bdb01b3d8",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramecrfastpskesaC54314D2": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR image URI for fastp-skesa (run: test-run-id)",
+        "Name": "/test-prefix/amr/ecr/image-uri/fastp-skesa",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:c6180d78693817b41b1cad7859783a346283dd26ba45ed78c4f99910bd371b7e",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramecrfuncscanEEF3B978": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR image URI for funcscan (run: test-run-id)",
+        "Name": "/test-prefix/amr/ecr/image-uri/funcscan",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:abce2fbbcb5f4603511f85b339dbdee76d5ff3014b04ad05a3112e313cee82b3",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramecrhamronizationC5917842": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR image URI for hamronization (run: test-run-id)",
+        "Name": "/test-prefix/amr/ecr/image-uri/hamronization",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:b20a10319ef7c5f12fd04ea29a16fba026b8dc5db6e2b66ded2d660b889b7aa2",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramecrsratools1A78D55C": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR image URI for sra-tools (run: test-run-id)",
+        "Name": "/test-prefix/amr/ecr/image-uri/sra-tools",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::Sub": "123456789012.dkr.ecr.us-west-2.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-123456789012-us-west-2:f1d8659692ac9f67d8ef5b979fdc55742b400807871d4e0c97ae77add0a74e9d",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramrepoarnagentruntime94BB84C6": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR repository ARN for agent-runtime",
+        "Name": "/test-prefix/amr/ecr/repo-arn/agent-runtime",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "AgentRuntimerepo02C20977",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramrepoarnfastpskesaE2BD13C8": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR repository ARN for fastp-skesa",
+        "Name": "/test-prefix/amr/ecr/repo-arn/fastp-skesa",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "FastpSkesarepo11B04746",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramrepoarnfuncscanEA29CD3B": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR repository ARN for funcscan",
+        "Name": "/test-prefix/amr/ecr/repo-arn/funcscan",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "Funcscanrepo686531D1",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramrepoarnhamronization6BED0A35": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR repository ARN for hamronization",
+        "Name": "/test-prefix/amr/ecr/repo-arn/hamronization",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "Hamronizationrepo441AD33B",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramrepoarnsratoolsCBA28DB3": {
+      "Properties": {
+        "Description": "test-prefix AMR ECR repository ARN for sra-tools",
+        "Name": "/test-prefix/amr/ecr/repo-arn/sra-tools",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "SraToolsrepoA8C2B2F1",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

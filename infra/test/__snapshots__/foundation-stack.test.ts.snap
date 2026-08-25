@@ -1,0 +1,738 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`FoundationStack matches snapshot 1`] = `
+{
+  "Outputs": {
+    "DynamoCmkArn": {
+      "Export": {
+        "Name": "test-prefix-dynamo-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "dynamocmkkey11C5B9A0",
+          "Arn",
+        ],
+      },
+    },
+    "GlueCmkArn": {
+      "Export": {
+        "Name": "test-prefix-glue-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "gluecmkkey6EDBF130",
+          "Arn",
+        ],
+      },
+    },
+    "HealthOmicsCmkArn": {
+      "Export": {
+        "Name": "test-prefix-healthomics-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "healthomicscmkkeyB43FE29C",
+          "Arn",
+        ],
+      },
+    },
+    "LambdaLogsCmkArn": {
+      "Export": {
+        "Name": "test-prefix-lambda-logs-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "lambdalogscmkkey4F7F0E4D",
+          "Arn",
+        ],
+      },
+    },
+    "S3DataLakeCmkArn": {
+      "Export": {
+        "Name": "test-prefix-s3-data-lake-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "s3datalakecmkkey74EC7F42",
+          "Arn",
+        ],
+      },
+    },
+    "S3TablesCmkArn": {
+      "Export": {
+        "Name": "test-prefix-s3-tables-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "s3tablescmkkey98D6BBFD",
+          "Arn",
+        ],
+      },
+    },
+    "SnsCmkArn": {
+      "Export": {
+        "Name": "test-prefix-sns-cmk-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "snscmkkeyC20D6A90",
+          "Arn",
+        ],
+      },
+    },
+    "SsmParamNamespace": {
+      "Export": {
+        "Name": "test-prefix-ssm-param-namespace",
+      },
+      "Value": "/test-prefix/amr",
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "amrnamespaceparam6FC4C188": {
+      "Properties": {
+        "Description": "test-prefix AMR foundation stack name",
+        "Name": "/test-prefix/amr/foundation/stack-name",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": "TestFoundationStack",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "dynamocmkaliasB759A0D3": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-dynamo-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "dynamocmkkey11C5B9A0",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "dynamocmkkey11C5B9A0": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix DynamoDB encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dynamodb.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "AllowdynamodbamazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "gluecmkalias5BB620D6": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-glue-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "gluecmkkey6EDBF130",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "gluecmkkey6EDBF130": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix Glue encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "glue.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "AllowglueamazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "healthomicscmkalias16320AC6": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-healthomics-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "healthomicscmkkeyB43FE29C",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "healthomicscmkkeyB43FE29C": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix HealthOmics encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "omics.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "AllowomicsamazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "lambdalogscmkalias0EE38612": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-lambda-logs-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "lambdalogscmkkey4F7F0E4D",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "lambdalogscmkkey4F7F0E4D": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix Lambda logs encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logs.us-west-2.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "Allowlogsuswest2amazonawscomAccess",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "AllowlambdaamazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "paramdynamocmkarnE9DCC9AB": {
+      "Properties": {
+        "Description": "test-prefix AMR dynamo-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/dynamo-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "dynamocmkkey11C5B9A0",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramgluecmkarnADDE9A37": {
+      "Properties": {
+        "Description": "test-prefix AMR glue-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/glue-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "gluecmkkey6EDBF130",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramhealthomicscmkarn8E382626": {
+      "Properties": {
+        "Description": "test-prefix AMR healthomics-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/healthomics-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "healthomicscmkkeyB43FE29C",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramlambdalogscmkarn466157B3": {
+      "Properties": {
+        "Description": "test-prefix AMR lambda-logs-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/lambda-logs-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "lambdalogscmkkey4F7F0E4D",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "params3datalakecmkarnEB609111": {
+      "Properties": {
+        "Description": "test-prefix AMR s3-data-lake-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/s3-data-lake-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "s3datalakecmkkey74EC7F42",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "params3tablescmkarn1EF967A2": {
+      "Properties": {
+        "Description": "test-prefix AMR s3-tables-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/s3-tables-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "s3tablescmkkey98D6BBFD",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "paramsnscmkarn6973064C": {
+      "Properties": {
+        "Description": "test-prefix AMR sns-cmk-arn",
+        "Name": "/test-prefix/amr/foundation/sns-cmk-arn",
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "snscmkkeyC20D6A90",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "s3datalakecmkalias020FF25F": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-s3-data-lake-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "s3datalakecmkkey74EC7F42",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "s3datalakecmkkey74EC7F42": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix S3 Data Lake encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "s3.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "Allows3amazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "s3tablescmkaliasBD69B518": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-s3-tables-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "s3tablescmkkey98D6BBFD",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "s3tablescmkkey98D6BBFD": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix S3 Tables encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "s3.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "Allows3amazonawscomAccess",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "maintenance.s3tables.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "Allowmaintenances3tablesamazonawscomAccess",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lakeformation.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "AllowlakeformationamazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "snscmkalias75C0BBCE": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AliasName": "alias/test-prefix-sns-cmk",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "snscmkkeyC20D6A90",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "snscmkkeyC20D6A90": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "test-prefix SNS encryption key",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789012:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+              "Sid": "EnableRootAccountAdmin",
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": "*",
+              "Sid": "AllowsnsamazonawscomAccess",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

@@ -1,0 +1,4865 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ApiStack matches snapshot 1`] = `
+{
+  "Outputs": {
+    "AgentRuntimeArn": {
+      "Export": {
+        "Name": "test-prefix-amr-AgentRuntimeArn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "AmrAgentRuntimeC8BE9D06",
+          "AgentRuntimeArn",
+        ],
+      },
+    },
+    "AgentRuntimeEndpointArn": {
+      "Export": {
+        "Name": "test-prefix-amr-AgentRuntimeEndpointArn",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::GetAtt": [
+                "AmrAgentRuntimeC8BE9D06",
+                "AgentRuntimeArn",
+              ],
+            },
+            "/runtime-endpoint/DEFAULT",
+          ],
+        ],
+      },
+    },
+    "GuardrailId": {
+      "Export": {
+        "Name": "test-prefix-amr-GuardrailId",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "AmrGuardrail",
+          "GuardrailId",
+        ],
+      },
+    },
+    "HostedUiUrl": {
+      "Export": {
+        "Name": "test-prefix-amr-HostedUiUrl",
+      },
+      "Value": "https://test-prefix-amr-auth.auth.us-west-2.amazoncognito.com",
+    },
+    "RestApiEndpoint0551178A": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "RestApi0C43BF4B",
+            },
+            ".execute-api.us-west-2.",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "RestApiDeploymentStageprod3855DE66",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+    "RestApiUrl": {
+      "Export": {
+        "Name": "test-prefix-amr-RestApiUrl",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "RestApi0C43BF4B",
+            },
+            ".execute-api.us-west-2.",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "RestApiDeploymentStageprod3855DE66",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+    "UserPoolClientId": {
+      "Export": {
+        "Name": "test-prefix-amr-UserPoolClientId",
+      },
+      "Value": {
+        "Ref": "UserPoolWebClient4C9370B0",
+      },
+    },
+    "UserPoolId": {
+      "Export": {
+        "Name": "test-prefix-amr-UserPoolId",
+      },
+      "Value": {
+        "Ref": "UserPool6BA7E5F2",
+      },
+    },
+    "WsApiUrl": {
+      "Export": {
+        "Name": "test-prefix-amr-WsApiUrl",
+      },
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "wss://",
+            {
+              "Ref": "WsApi88D84716",
+            },
+            ".execute-api.us-west-2.",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/prod",
+          ],
+        ],
+      },
+    },
+    "WsConnectionsTableName": {
+      "Export": {
+        "Name": "test-prefix-amr-WsConnectionsTableName",
+      },
+      "Value": {
+        "Ref": "WsConnectionsTable9E1AC3EB",
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "SsmParameterValuetestprefixamrecrimageuriagentruntimeC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Default": "/test-prefix/amr/ecr/image-uri/agent-runtime",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "SsmParameterValuetestprefixamrfoundationdynamocmkarnC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Default": "/test-prefix/amr/foundation/dynamo-cmk-arn",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Default": "/test-prefix/amr/foundation/s3-data-lake-cmk-arn",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Default": "/test-prefix/amr/foundation/s3-tables-cmk-arn",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "AgentRuntimeRole5365C2E6": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "bedrock-agentcore.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Execution role for AMR AgentCore Runtime",
+        "RoleName": "test-prefix-amr-agent-runtime-role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "AgentRuntimeRoleDefaultPolicy28A421B5": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "bedrock:InvokeModel",
+                "bedrock:InvokeModelWithResponseStream",
+                "bedrock:Converse",
+                "bedrock:ConverseStream",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:bedrock:*:123456789012:inference-profile/us.anthropic.claude-opus-4-7",
+                "arn:aws:bedrock:*::foundation-model/anthropic.claude-opus-4-7",
+              ],
+            },
+            {
+              "Action": "bedrock:ApplyGuardrail",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "AmrGuardrail",
+                  "GuardrailArn",
+                ],
+              },
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ToolQueryAmrProfilesFnCE6F0EC6",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::GetAtt": [
+                    "ToolGetResistanceTrendsFnA9963526",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::GetAtt": [
+                    "ToolCompareIsolatesFn0C3037D4",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::GetAtt": [
+                    "ToolLookupGeneInfoFn0BC799ED",
+                    "Arn",
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:ecr:us-west-2:123456789012:repository/cdk-hnb659fds-container-assets-123456789012-us-west-2",
+            },
+            {
+              "Action": [
+                "logs:DescribeLogStreams",
+                "logs:CreateLogGroup",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:us-west-2:123456789012:log-group:/aws/bedrock-agentcore/runtimes/*",
+                  ],
+                ],
+              },
+              "Sid": "LogGroupAccess",
+            },
+            {
+              "Action": "logs:DescribeLogGroups",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:us-west-2:123456789012:log-group:*",
+                  ],
+                ],
+              },
+              "Sid": "DescribeLogGroups",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":logs:us-west-2:123456789012:log-group:/aws/bedrock-agentcore/runtimes/*:log-stream:*",
+                  ],
+                ],
+              },
+              "Sid": "LogStreamAccess",
+            },
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+                "xray:GetSamplingRules",
+                "xray:GetSamplingTargets",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+              "Sid": "XRayAccess",
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Condition": {
+                "StringEquals": {
+                  "cloudwatch:namespace": "bedrock-agentcore",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": "*",
+              "Sid": "CloudWatchMetrics",
+            },
+            {
+              "Action": [
+                "bedrock-agentcore:GetWorkloadAccessToken",
+                "bedrock-agentcore:GetWorkloadAccessTokenForJWT",
+                "bedrock-agentcore:GetWorkloadAccessTokenForUserId",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":bedrock-agentcore:us-west-2:123456789012:workload-identity-directory/default",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":bedrock-agentcore:us-west-2:123456789012:workload-identity-directory/default/workload-identity/*",
+                    ],
+                  ],
+                },
+              ],
+              "Sid": "GetAgentAccessToken",
+            },
+            {
+              "Action": "bedrock-agentcore:CreateEvent",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "AmrMemoryCB0359FC",
+                  "MemoryArn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "bedrock-agentcore:GetEvent",
+                "bedrock-agentcore:ListEvents",
+                "bedrock-agentcore:ListActors",
+                "bedrock-agentcore:ListSessions",
+                "bedrock-agentcore:GetMemoryRecord",
+                "bedrock-agentcore:RetrieveMemoryRecords",
+                "bedrock-agentcore:ListMemoryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "AmrMemoryCB0359FC",
+                  "MemoryArn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AgentRuntimeRoleDefaultPolicy28A421B5",
+        "Roles": [
+          {
+            "Ref": "AgentRuntimeRole5365C2E6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "AmrAgentRuntimeC8BE9D06": {
+      "DependsOn": [
+        "AgentRuntimeRoleDefaultPolicy28A421B5",
+        "AgentRuntimeRole5365C2E6",
+      ],
+      "Properties": {
+        "AgentRuntimeArtifact": {
+          "ContainerConfiguration": {
+            "ContainerUri": {
+              "Ref": "SsmParameterValuetestprefixamrecrimageuriagentruntimeC96584B6F00A464EAD1953AFF4B05118Parameter",
+            },
+          },
+        },
+        "AgentRuntimeName": "test_prefix_amr_rt",
+        "Description": "AMR Strands agent with Bedrock Claude + Athena tools",
+        "EnvironmentVariables": {
+          "BEDROCK_MODEL_ID": "us.anthropic.claude-opus-4-7",
+          "GUARDRAIL_ID": {
+            "Fn::GetAtt": [
+              "AmrGuardrail",
+              "GuardrailId",
+            ],
+          },
+          "GUARDRAIL_VERSION": {
+            "Fn::GetAtt": [
+              "AmrGuardrail",
+              "Version",
+            ],
+          },
+          "TOOL_FN_COMPARE": {
+            "Ref": "ToolCompareIsolatesFn0C3037D4",
+          },
+          "TOOL_FN_GENE_INFO": {
+            "Ref": "ToolLookupGeneInfoFn0BC799ED",
+          },
+          "TOOL_FN_QUERY_AMR": {
+            "Ref": "ToolQueryAmrProfilesFnCE6F0EC6",
+          },
+          "TOOL_FN_TRENDS": {
+            "Ref": "ToolGetResistanceTrendsFnA9963526",
+          },
+        },
+        "LifecycleConfiguration": {},
+        "NetworkConfiguration": {
+          "NetworkMode": "PUBLIC",
+        },
+        "ProtocolConfiguration": "HTTP",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "AgentRuntimeRole5365C2E6",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::BedrockAgentCore::Runtime",
+    },
+    "AmrGuardrail": {
+      "Properties": {
+        "BlockedInputMessaging": "I can only answer questions about AMR genomics and resistance gene data.",
+        "BlockedOutputsMessaging": "I can only answer questions about AMR genomics and resistance gene data.",
+        "ContextualGroundingPolicyConfig": {
+          "FiltersConfig": [
+            {
+              "Action": "BLOCK",
+              "Enabled": true,
+              "Threshold": 0.7,
+              "Type": "GROUNDING",
+            },
+            {
+              "Action": "BLOCK",
+              "Enabled": true,
+              "Threshold": 0.5,
+              "Type": "RELEVANCE",
+            },
+          ],
+        },
+        "Description": "AMR agent guardrail: contextual grounding + deny medical/patient topics",
+        "Name": "test-prefix-amr-guardrail",
+        "TopicPolicyConfig": {
+          "TopicsConfig": [
+            {
+              "Definition": "Recommendations about medical treatment, medications, dosages, or patient-specific clinical decisions",
+              "Examples": [
+                "What antibiotic should I prescribe?",
+                "Is this drug safe for my patient?",
+              ],
+              "InputAction": "BLOCK",
+              "Name": "MedicalAdvice",
+              "OutputAction": "BLOCK",
+              "Type": "DENY",
+            },
+            {
+              "Definition": "Patient-specific AMR treatment recommendations or individual patient medical decisions",
+              "Examples": [
+                "My patient has this resistance profile, what treatment?",
+                "Best treatment for patient X?",
+              ],
+              "InputAction": "BLOCK",
+              "Name": "PatientSpecificRecommendations",
+              "OutputAction": "BLOCK",
+              "Type": "DENY",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Bedrock::Guardrail",
+    },
+    "AmrMemoryCB0359FC": {
+      "Properties": {
+        "Description": "Conversation context for AMR agent",
+        "EventExpiryDuration": 90,
+        "MemoryExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "AgentRuntimeRole5365C2E6",
+            "Arn",
+          ],
+        },
+        "Name": "test_prefix_amr_mem",
+      },
+      "Type": "AWS::BedrockAgentCore::Memory",
+    },
+    "ApiAthenaQueryFn92A50372": {
+      "DependsOn": [
+        "ApiAthenaQueryFnServiceRoleDefaultPolicy2E3F164A",
+        "ApiAthenaQueryFnServiceRole95EEBDD5",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "cfe1b9209f5a1c596e5b7f052d8156ff53e5f5a3d530c1d284ebc35e8773c264.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-athena-query",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiAthenaQueryLogsB6D2F08C",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiAthenaQueryFnServiceRole95EEBDD5",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiAthenaQueryFnServiceRole95EEBDD5": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiAthenaQueryFnServiceRoleDefaultPolicy2E3F164A": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::test-prefix-amr-athena-results",
+                "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                "arn:aws:s3:::test-prefix-amr-data-lake",
+                "arn:aws:s3:::test-prefix-amr-data-lake/*",
+              ],
+            },
+            {
+              "Action": [
+                "glue:GetDatabase",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartitions",
+                "glue:GetCatalog",
+                "glue:GetCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "athena:GetDataCatalog",
+                "athena:ListDataCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3tables:GetTableBucket",
+                "s3tables:ListTableBuckets",
+                "s3tables:GetTable",
+                "s3tables:ListTables",
+                "s3tables:GetTableData",
+                "s3tables:GetTableMetadataLocation",
+                "s3tables:GetNamespace",
+                "s3tables:ListNamespaces",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "lakeformation:GetDataAccess",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiAthenaQueryFnServiceRoleDefaultPolicy2E3F164A",
+        "Roles": [
+          {
+            "Ref": "ApiAthenaQueryFnServiceRole95EEBDD5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiAthenaQueryLogsB6D2F08C": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-athena-query",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiChatBridgeFnFDF7B5D6": {
+      "DependsOn": [
+        "ApiChatBridgeFnServiceRoleDefaultPolicy010ABDC5",
+        "ApiChatBridgeFnServiceRole48C7930D",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "03aed0d7b2394806f76e0ca6f965a656714d63520030a2931850ddcee7161dae.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "AGENT_RUNTIME_ARN": {
+              "Fn::GetAtt": [
+                "AmrAgentRuntimeC8BE9D06",
+                "AgentRuntimeArn",
+              ],
+            },
+            "AGENT_RUNTIME_ENDPOINT_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "AmrAgentRuntimeC8BE9D06",
+                      "AgentRuntimeArn",
+                    ],
+                  },
+                  "/runtime-endpoint/DEFAULT",
+                ],
+              ],
+            },
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "CONNECTIONS_TABLE": {
+              "Ref": "WsConnectionsTable9E1AC3EB",
+            },
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-chat-bridge",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiChatBridgeLogs89EAF308",
+          },
+        },
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiChatBridgeFnServiceRole48C7930D",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiChatBridgeFnServiceRole48C7930D": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiChatBridgeFnServiceRoleDefaultPolicy010ABDC5": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WsConnectionsTable9E1AC3EB",
+                    "Arn",
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WsConnectionsTable9E1AC3EB",
+                    "Arn",
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "execute-api:ManageConnections",
+              "Effect": "Allow",
+              "Resource": "arn:aws:execute-api:us-west-2:123456789012:*",
+            },
+            {
+              "Action": "bedrock-agentcore:InvokeAgentRuntime",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AmrAgentRuntimeC8BE9D06",
+                          "AgentRuntimeArn",
+                        ],
+                      },
+                      "/runtime-endpoint/DEFAULT",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AmrAgentRuntimeC8BE9D06",
+                          "AgentRuntimeArn",
+                        ],
+                      },
+                      "/runtime-endpoint/DEFAULT/*",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::GetAtt": [
+                    "AmrAgentRuntimeC8BE9D06",
+                    "AgentRuntimeArn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AmrAgentRuntimeC8BE9D06",
+                          "AgentRuntimeArn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiChatBridgeFnServiceRoleDefaultPolicy010ABDC5",
+        "Roles": [
+          {
+            "Ref": "ApiChatBridgeFnServiceRole48C7930D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiChatBridgeLogs89EAF308": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-chat-bridge",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiHealthFn0F1190C8": {
+      "DependsOn": [
+        "ApiHealthFnServiceRoleDefaultPolicy2F1BB78B",
+        "ApiHealthFnServiceRole2DA4D949",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "98d62d80d66043e202b7ccf32151150eb0fb3d3dd235d1efc0ad74598d2a821d.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-health",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiHealthLogs37526C2A",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiHealthFnServiceRole2DA4D949",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiHealthFnServiceRole2DA4D949": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiHealthFnServiceRoleDefaultPolicy2F1BB78B": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiHealthFnServiceRoleDefaultPolicy2F1BB78B",
+        "Roles": [
+          {
+            "Ref": "ApiHealthFnServiceRole2DA4D949",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiHealthLogs37526C2A": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-health",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiIngestionTriggerFn68A7B0CA": {
+      "DependsOn": [
+        "ApiIngestionTriggerFnServiceRoleDefaultPolicy9DFA66F7",
+        "ApiIngestionTriggerFnServiceRoleDCB599A7",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "91b48e318d6e115b88e08e34758514426f11f74826593c596b55dd81cbe88c73.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "INGESTION_VALIDATOR_ARN": "arn:aws:lambda:us-west-2:123456789012:function:test-prefix-amr-ingestion-validator",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-ingestion-trigger",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiIngestionTriggerLogs22DB9DB6",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiIngestionTriggerFnServiceRoleDCB599A7",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiIngestionTriggerFnServiceRoleDCB599A7": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiIngestionTriggerFnServiceRoleDefaultPolicy9DFA66F7": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": "arn:aws:lambda:us-west-2:123456789012:function:test-prefix-amr-ingestion-validator",
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundationdynamocmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiIngestionTriggerFnServiceRoleDefaultPolicy9DFA66F7",
+        "Roles": [
+          {
+            "Ref": "ApiIngestionTriggerFnServiceRoleDCB599A7",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiIngestionTriggerLogs22DB9DB6": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-ingestion-trigger",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiIsolatesFn861B5F77": {
+      "DependsOn": [
+        "ApiIsolatesFnServiceRoleDefaultPolicy65C0EF5D",
+        "ApiIsolatesFnServiceRole13DB5D11",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "ea22e8fbd0a5eaa172eabf5554369cce609c956fda9b083f4285363be507d4eb.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-isolates",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiIsolatesLogs052C7702",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiIsolatesFnServiceRole13DB5D11",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiIsolatesFnServiceRole13DB5D11": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiIsolatesFnServiceRoleDefaultPolicy65C0EF5D": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::test-prefix-amr-athena-results",
+                "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                "arn:aws:s3:::test-prefix-amr-data-lake",
+                "arn:aws:s3:::test-prefix-amr-data-lake/*",
+              ],
+            },
+            {
+              "Action": [
+                "glue:GetDatabase",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartitions",
+                "glue:GetCatalog",
+                "glue:GetCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "athena:GetDataCatalog",
+                "athena:ListDataCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3tables:GetTableBucket",
+                "s3tables:ListTableBuckets",
+                "s3tables:GetTable",
+                "s3tables:ListTables",
+                "s3tables:GetTableData",
+                "s3tables:GetTableMetadataLocation",
+                "s3tables:GetNamespace",
+                "s3tables:ListNamespaces",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "lakeformation:GetDataAccess",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiIsolatesFnServiceRoleDefaultPolicy65C0EF5D",
+        "Roles": [
+          {
+            "Ref": "ApiIsolatesFnServiceRole13DB5D11",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiIsolatesLogs052C7702": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-isolates",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiLambdaDlq482C6C69": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-api-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ApiWorkflowDetailFnC17D1BE5": {
+      "DependsOn": [
+        "ApiWorkflowDetailFnServiceRoleDefaultPolicyC1042828",
+        "ApiWorkflowDetailFnServiceRole1AAE081A",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "1092d92a3f89c118a04d72afbdc21fa4932e45e219a17a731731e8d791b4f968.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-workflow-detail",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiWorkflowDetailLogs99487D3B",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiWorkflowDetailFnServiceRole1AAE081A",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiWorkflowDetailFnServiceRole1AAE081A": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiWorkflowDetailFnServiceRoleDefaultPolicyC1042828": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "states:DescribeExecution",
+                "states:GetExecutionHistory",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:states:us-west-2:123456789012:execution:test-prefix-amr-pipeline:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiWorkflowDetailFnServiceRoleDefaultPolicyC1042828",
+        "Roles": [
+          {
+            "Ref": "ApiWorkflowDetailFnServiceRole1AAE081A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiWorkflowDetailLogs99487D3B": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-workflow-detail",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiWorkflowsListFn852CE6B5": {
+      "DependsOn": [
+        "ApiWorkflowsListFnServiceRoleDefaultPolicy6D00A4BF",
+        "ApiWorkflowsListFnServiceRole15C1ABB3",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "88df17047c08732ba6056136dc960901a379cbb35db6fbed0ac2ee92204ccc91.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-workflows-list",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiWorkflowsListLogsBF74D509",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiWorkflowsListFnServiceRole15C1ABB3",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiWorkflowsListFnServiceRole15C1ABB3": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiWorkflowsListFnServiceRoleDefaultPolicy6D00A4BF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": "states:ListExecutions",
+              "Effect": "Allow",
+              "Resource": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+            },
+            {
+              "Action": "dynamodb:Scan",
+              "Effect": "Allow",
+              "Resource": "arn:aws:dynamodb:us-west-2:123456789012:table/test-prefix-amr-isolate-state",
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundationdynamocmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiWorkflowsListFnServiceRoleDefaultPolicy6D00A4BF",
+        "Roles": [
+          {
+            "Ref": "ApiWorkflowsListFnServiceRole15C1ABB3",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiWorkflowsListLogsBF74D509": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-workflows-list",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiWsAuthorizerFnC1C47DBA": {
+      "DependsOn": [
+        "ApiWsAuthorizerFnServiceRoleDefaultPolicy6BBEC0DC",
+        "ApiWsAuthorizerFnServiceRole9E893697",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "9863d790b0353de4357019126ff1a9005139a062ff07c2f1dc864b42533f23b9.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "CLIENT_ID": {
+              "Ref": "UserPoolWebClient4C9370B0",
+            },
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "RESOURCE_PREFIX": "test-prefix",
+            "STATE_MACHINE_ARN": "arn:aws:states:us-west-2:123456789012:stateMachine:test-prefix-amr-pipeline",
+            "USER_POOL_ID": {
+              "Ref": "UserPool6BA7E5F2",
+            },
+          },
+        },
+        "FunctionName": "test-prefix-amr-api-ws-authorizer",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ApiWsAuthorizerLogsE0FAB09F",
+          },
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiWsAuthorizerFnServiceRole9E893697",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 29,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiWsAuthorizerFnServiceRole9E893697": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiWsAuthorizerFnServiceRoleDefaultPolicy6BBEC0DC": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiWsAuthorizerFnServiceRoleDefaultPolicy6BBEC0DC",
+        "Roles": [
+          {
+            "Ref": "ApiWsAuthorizerFnServiceRole9E893697",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiWsAuthorizerLogsE0FAB09F": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-api-ws-authorizer",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CognitoAuth8E818E2A": {
+      "Properties": {
+        "AuthorizerResultTtlInSeconds": 300,
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "test-prefix-amr-cognito-auth",
+        "ProviderARNs": [
+          {
+            "Fn::GetAtt": [
+              "UserPool6BA7E5F2",
+              "Arn",
+            ],
+          },
+        ],
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+        "Type": "COGNITO_USER_POOLS",
+      },
+      "Type": "AWS::ApiGateway::Authorizer",
+    },
+    "RestApi0C43BF4B": {
+      "Properties": {
+        "Description": "test-prefix AMR REST API",
+        "Name": "test-prefix-amr-rest",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "RestApiAccessLogs583CC468": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/apigateway/test-prefix-amr-rest-access",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "RestApiAccount7C83CF5A": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "RestApi0C43BF4B",
+      ],
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "RestApiCloudWatchRoleE3ED6605",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "RestApiCloudWatchRoleE3ED6605": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "RestApiDefaultUsagePlan2D0A0A82": {
+      "Properties": {
+        "ApiStages": [
+          {
+            "ApiId": {
+              "Ref": "RestApi0C43BF4B",
+            },
+            "Stage": {
+              "Ref": "RestApiDeploymentStageprod3855DE66",
+            },
+            "Throttle": {},
+          },
+        ],
+        "Quota": {
+          "Limit": 50000,
+          "Period": "DAY",
+        },
+        "Throttle": {
+          "BurstLimit": 20,
+          "RateLimit": 10,
+        },
+        "UsagePlanName": "test-prefix-amr-usage-plan",
+      },
+      "Type": "AWS::ApiGateway::UsagePlan",
+    },
+    "RestApiDeployment180EC50361c312f9a87171c3e7c0bb7d96192033": {
+      "DependsOn": [
+        "RestApiathenaOPTIONS8858B862",
+        "RestApiathenaqueryOPTIONSE7249DFE",
+        "RestApiathenaqueryPOST274C02C4",
+        "RestApiathenaquery4EBF294F",
+        "RestApiathena872820E0",
+        "RestApihealthGET0B7A6069",
+        "RestApihealthOPTIONS8285AB3C",
+        "RestApihealthC6B391F6",
+        "RestApiingestionOPTIONS62EE8D70",
+        "RestApiingestion52B8A412",
+        "RestApiingestiontriggerOPTIONS01C01389",
+        "RestApiingestiontriggerPOST36B1B40B",
+        "RestApiingestiontrigger55A532A0",
+        "RestApiisolatesGET0528B284",
+        "RestApiisolatesOPTIONSFE12EE07",
+        "RestApiisolatesA65645C6",
+        "RestApiOPTIONS6AA64D2D",
+        "RestApiworkflowsrunIdGETF6106C99",
+        "RestApiworkflowsrunIdOPTIONS1EA6CD13",
+        "RestApiworkflowsrunId2CD167AC",
+        "RestApiworkflowsGET7D7CEF55",
+        "RestApiworkflowsOPTIONSB2D7A59D",
+        "RestApiworkflowsE998F71D",
+        "RestApiRequestValidatorAAF760FF",
+      ],
+      "Metadata": {
+        "aws:cdk:do-not-refactor": true,
+      },
+      "Properties": {
+        "Description": "test-prefix AMR REST API",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "RestApiDeploymentStageprod3855DE66": {
+      "DependsOn": [
+        "RestApiAccount7C83CF5A",
+      ],
+      "Metadata": {
+        "palisade_suppress": [
+          {
+            "id": "palisade.pb2k.apigateway.restapi.logging_rest",
+            "reason": "AccessLogSetting + MethodSettings[LoggingLevel=ERROR, DataTraceEnabled=false] configured. Hook evidence confirms this is NOT a detailed-logging violation.",
+          },
+        ],
+      },
+      "Properties": {
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "RestApiAccessLogs583CC468",
+              "Arn",
+            ],
+          },
+        },
+        "DeploymentId": {
+          "Ref": "RestApiDeployment180EC50361c312f9a87171c3e7c0bb7d96192033",
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "ERROR",
+            "MetricsEnabled": true,
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "RestApiOPTIONS6AA64D2D": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiRequestValidatorAAF760FF": {
+      "Properties": {
+        "Name": "test-prefix-amr-validator",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+        "ValidateRequestBody": false,
+        "ValidateRequestParameters": true,
+      },
+      "Type": "AWS::ApiGateway::RequestValidator",
+    },
+    "RestApiathena872820E0": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "athena",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiathenaOPTIONS8858B862": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiathena872820E0",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiathenaquery4EBF294F": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "RestApiathena872820E0",
+        },
+        "PathPart": "query",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiathenaqueryOPTIONSE7249DFE": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiathenaquery4EBF294F",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiathenaqueryPOST274C02C4": {
+      "Metadata": {
+        "palisade_suppress": [
+          {
+            "id": "palisade.udd.apigatewayv2.route.no_auth",
+            "reason": "AuthorizationType=COGNITO_USER_POOLS with CognitoAuth authorizer — authenticated endpoint.",
+          },
+        ],
+      },
+      "Properties": {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "CognitoAuth8E818E2A",
+        },
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiAthenaQueryFn92A50372",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "RestApiathenaquery4EBF294F",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiathenaqueryPOSTApiPermissionTestApiStackRestApi095C0F14POSTathenaqueryB15BB7A9": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiAthenaQueryFn92A50372",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/POST/athena/query",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiathenaqueryPOSTApiPermissionTestTestApiStackRestApi095C0F14POSTathenaqueryB9400C03": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiAthenaQueryFn92A50372",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/POST/athena/query",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApihealthC6B391F6": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "health",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApihealthGET0B7A6069": {
+      "Metadata": {
+        "palisade_suppress": [
+          {
+            "id": "palisade.udd.apigatewayv2.route.no_auth",
+            "reason": "Health check endpoint is intentionally public — no auth by design per APEX step 6 spec.",
+          },
+        ],
+      },
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Content-Type": "'application/json'",
+              },
+              "ResponseTemplates": {
+                "application/json": "{"status":"ok","service":"amr-api"}",
+              },
+              "StatusCode": "200",
+            },
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestTemplates": {
+            "application/json": "{"statusCode": 200}",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Content-Type": true,
+            },
+            "StatusCode": "200",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApihealthC6B391F6",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApihealthOPTIONS8285AB3C": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApihealthC6B391F6",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiingestion52B8A412": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "ingestion",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiingestionOPTIONS62EE8D70": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiingestion52B8A412",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiingestiontrigger55A532A0": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "RestApiingestion52B8A412",
+        },
+        "PathPart": "trigger",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiingestiontriggerOPTIONS01C01389": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiingestiontrigger55A532A0",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiingestiontriggerPOST36B1B40B": {
+      "Properties": {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "CognitoAuth8E818E2A",
+        },
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiIngestionTriggerFn68A7B0CA",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "RestApiingestiontrigger55A532A0",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiingestiontriggerPOSTApiPermissionTestApiStackRestApi095C0F14POSTingestiontrigger8BABEDFC": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiIngestionTriggerFn68A7B0CA",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/POST/ingestion/trigger",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiingestiontriggerPOSTApiPermissionTestTestApiStackRestApi095C0F14POSTingestiontriggerFAB28CA9": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiIngestionTriggerFn68A7B0CA",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/POST/ingestion/trigger",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiisolatesA65645C6": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "isolates",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiisolatesGET0528B284": {
+      "Metadata": {
+        "palisade_suppress": [
+          {
+            "id": "palisade.udd.apigatewayv2.route.no_auth",
+            "reason": "AuthorizationType=COGNITO_USER_POOLS with CognitoAuth authorizer — authenticated endpoint.",
+          },
+        ],
+      },
+      "Properties": {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "CognitoAuth8E818E2A",
+        },
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiIsolatesFn861B5F77",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "RestApiisolatesA65645C6",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiisolatesGETApiPermissionTestApiStackRestApi095C0F14GETisolatesB391AF66": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiIsolatesFn861B5F77",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/GET/isolates",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiisolatesGETApiPermissionTestTestApiStackRestApi095C0F14GETisolates4133C5E0": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiIsolatesFn861B5F77",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/GET/isolates",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiisolatesOPTIONSFE12EE07": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiisolatesA65645C6",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiworkflowsE998F71D": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "workflows",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiworkflowsGET7D7CEF55": {
+      "Properties": {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "CognitoAuth8E818E2A",
+        },
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiWorkflowsListFn852CE6B5",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "RestApiworkflowsE998F71D",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiworkflowsGETApiPermissionTestApiStackRestApi095C0F14GETworkflowsCA10DF0C": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiWorkflowsListFn852CE6B5",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/GET/workflows",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiworkflowsGETApiPermissionTestTestApiStackRestApi095C0F14GETworkflows4A1093FC": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiWorkflowsListFn852CE6B5",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/GET/workflows",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiworkflowsOPTIONSB2D7A59D": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiworkflowsE998F71D",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiworkflowsrunId2CD167AC": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "RestApiworkflowsE998F71D",
+        },
+        "PathPart": "{runId}",
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiworkflowsrunIdGETApiPermissionTestApiStackRestApi095C0F14GETworkflowsrunId35AE1242": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiWorkflowDetailFnC17D1BE5",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/GET/workflows/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiworkflowsrunIdGETApiPermissionTestTestApiStackRestApi095C0F14GETworkflowsrunId51479FE8": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiWorkflowDetailFnC17D1BE5",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/GET/workflows/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiworkflowsrunIdGETF6106C99": {
+      "Properties": {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "CognitoAuth8E818E2A",
+        },
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiWorkflowDetailFnC17D1BE5",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "RestApiworkflowsrunId2CD167AC",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApiworkflowsrunIdOPTIONS1EA6CD13": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "RestApiworkflowsrunId2CD167AC",
+        },
+        "RestApiId": {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "SmokeSeederFn9281E8F4": {
+      "DependsOn": [
+        "SmokeSeederFnServiceRoleDefaultPolicy55B9CA00",
+        "SmokeSeederFnServiceRole7A641DE5",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "3ab6e431696988ae6dd03726314bc36d91272f0900cd1a69e314cfef941eaf5f.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ApiLambdaDlq482C6C69",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ADMIN_USERNAME": "admin@test-prefix.example.com",
+            "RESOURCE_PREFIX": "test-prefix",
+            "USER_POOL_ID": {
+              "Ref": "UserPool6BA7E5F2",
+            },
+          },
+        },
+        "FunctionName": "test-prefix-amr-smoke-users-seeder",
+        "Handler": "index.handler",
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "SmokeSeederFnServiceRole7A641DE5",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 120,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SmokeSeederFnServiceRole7A641DE5": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SmokeSeederFnServiceRoleDefaultPolicy55B9CA00": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ApiLambdaDlq482C6C69",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:AdminGetUser",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "UserPool6BA7E5F2",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "secretsmanager:CreateSecret",
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:TagResource",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:secretsmanager:us-west-2:123456789012:secret:test-prefix/amr/cognito/*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "SmokeSeederFnServiceRoleDefaultPolicy55B9CA00",
+        "Roles": [
+          {
+            "Ref": "SmokeSeederFnServiceRole7A641DE5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "SmokeSeederProviderframeworkonEventE47E71EE": {
+      "DependsOn": [
+        "SmokeSeederProviderframeworkonEventServiceRoleDefaultPolicyBE4F53BA",
+        "SmokeSeederProviderframeworkonEventServiceRoleA3450916",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57.zip",
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (TestApiStack/SmokeSeederProvider)",
+        "Environment": {
+          "Variables": {
+            "USER_ON_EVENT_FUNCTION_ARN": {
+              "Fn::GetAtt": [
+                "SmokeSeederFn9281E8F4",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "Handler": "framework.onEvent",
+        "LoggingConfig": {
+          "ApplicationLogLevel": "FATAL",
+          "LogFormat": "JSON",
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "SmokeSeederProviderframeworkonEventServiceRoleA3450916",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SmokeSeederProviderframeworkonEventServiceRoleA3450916": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SmokeSeederProviderframeworkonEventServiceRoleDefaultPolicyBE4F53BA": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "SmokeSeederFn9281E8F4",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SmokeSeederFn9281E8F4",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "lambda:GetFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SmokeSeederFn9281E8F4",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "SmokeSeederProviderframeworkonEventServiceRoleDefaultPolicyBE4F53BA",
+        "Roles": [
+          {
+            "Ref": "SmokeSeederProviderframeworkonEventServiceRoleA3450916",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "SmokeUsersSeeder": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "UserPoolAuthDomain95EAFE2A",
+        "UserPool6BA7E5F2",
+        "UserPoolWebClient4C9370B0",
+      ],
+      "Properties": {
+        "Prefix": "test-prefix",
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "SmokeSeederProviderframeworkonEventE47E71EE",
+            "Arn",
+          ],
+        },
+        "UserPoolId": {
+          "Ref": "UserPool6BA7E5F2",
+        },
+        "Version": "1",
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "SsmAgentRuntimeArn52239F42": {
+      "Properties": {
+        "Name": "/test-prefix/amr/agentcore/runtime-arn",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "AmrAgentRuntimeC8BE9D06",
+            "AgentRuntimeArn",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmAgentRuntimeEndpointArn708D44F5": {
+      "Properties": {
+        "Name": "/test-prefix/amr/agentcore/endpoint-arn",
+        "Type": "String",
+        "Value": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Fn::GetAtt": [
+                  "AmrAgentRuntimeC8BE9D06",
+                  "AgentRuntimeArn",
+                ],
+              },
+              "/runtime-endpoint/DEFAULT",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmClientId337546DA": {
+      "Properties": {
+        "Name": "/test-prefix/amr/cognito/clientId",
+        "Type": "String",
+        "Value": {
+          "Ref": "UserPoolWebClient4C9370B0",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmHostedUiUrlE3091E90": {
+      "Properties": {
+        "Name": "/test-prefix/amr/cognito/hostedUiUrl",
+        "Type": "String",
+        "Value": "https://test-prefix-amr-auth.auth.us-west-2.amazoncognito.com",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmRestApiUrlC78A1D11": {
+      "Properties": {
+        "Name": "/test-prefix/amr/api/rest-url",
+        "Type": "String",
+        "Value": {
+          "Fn::Join": [
+            "",
+            [
+              "https://",
+              {
+                "Ref": "RestApi0C43BF4B",
+              },
+              ".execute-api.us-west-2.",
+              {
+                "Ref": "AWS::URLSuffix",
+              },
+              "/",
+              {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmUserPoolId515A138C": {
+      "Properties": {
+        "Name": "/test-prefix/amr/cognito/userPoolId",
+        "Type": "String",
+        "Value": {
+          "Ref": "UserPool6BA7E5F2",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmWsApiUrlDC2804CF": {
+      "Properties": {
+        "Name": "/test-prefix/amr/api/ws-url",
+        "Type": "String",
+        "Value": {
+          "Fn::Join": [
+            "",
+            [
+              "wss://",
+              {
+                "Ref": "WsApi88D84716",
+              },
+              ".execute-api.us-west-2.",
+              {
+                "Ref": "AWS::URLSuffix",
+              },
+              "/prod",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "ToolCompareIsolatesDlqE0F6AAB7": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-tool-compare-isolates-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ToolCompareIsolatesFn0C3037D4": {
+      "DependsOn": [
+        "ToolCompareIsolatesFnServiceRoleDefaultPolicy76143E1C",
+        "ToolCompareIsolatesFnServiceRoleD869BD12",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "8ecdce61c9bddd0f7b30086b76c7e992d1367751b72641ea64571ec36a87a398.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ToolCompareIsolatesDlqE0F6AAB7",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+          },
+        },
+        "FunctionName": "test-prefix-amr-tool-compare-isolates",
+        "Handler": "compare_isolates.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ToolCompareIsolatesLogs2E555FF6",
+          },
+        },
+        "MemorySize": 512,
+        "Role": {
+          "Fn::GetAtt": [
+            "ToolCompareIsolatesFnServiceRoleD869BD12",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ToolCompareIsolatesFnServiceRoleD869BD12": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ToolCompareIsolatesFnServiceRoleDefaultPolicy76143E1C": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ToolCompareIsolatesDlqE0F6AAB7",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::test-prefix-amr-athena-results",
+                "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                "arn:aws:s3:::test-prefix-amr-data-lake",
+                "arn:aws:s3:::test-prefix-amr-data-lake/*",
+              ],
+            },
+            {
+              "Action": [
+                "glue:GetDatabase",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartitions",
+                "glue:GetCatalog",
+                "glue:GetCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "athena:GetDataCatalog",
+                "athena:ListDataCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3tables:GetTableBucket",
+                "s3tables:ListTableBuckets",
+                "s3tables:GetTable",
+                "s3tables:ListTables",
+                "s3tables:GetTableData",
+                "s3tables:GetTableMetadataLocation",
+                "s3tables:GetNamespace",
+                "s3tables:ListNamespaces",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "lakeformation:GetDataAccess",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ToolCompareIsolatesFnServiceRoleDefaultPolicy76143E1C",
+        "Roles": [
+          {
+            "Ref": "ToolCompareIsolatesFnServiceRoleD869BD12",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ToolCompareIsolatesLogs2E555FF6": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-tool-compare-isolates",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ToolGetResistanceTrendsDlq671022BD": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-tool-get-resistance-trends-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ToolGetResistanceTrendsFnA9963526": {
+      "DependsOn": [
+        "ToolGetResistanceTrendsFnServiceRoleDefaultPolicy5E799CA1",
+        "ToolGetResistanceTrendsFnServiceRole6D28DFB8",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "8ecdce61c9bddd0f7b30086b76c7e992d1367751b72641ea64571ec36a87a398.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ToolGetResistanceTrendsDlq671022BD",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+          },
+        },
+        "FunctionName": "test-prefix-amr-tool-get-resistance-trends",
+        "Handler": "get_resistance_trends.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ToolGetResistanceTrendsLogs0009132B",
+          },
+        },
+        "MemorySize": 512,
+        "Role": {
+          "Fn::GetAtt": [
+            "ToolGetResistanceTrendsFnServiceRole6D28DFB8",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ToolGetResistanceTrendsFnServiceRole6D28DFB8": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ToolGetResistanceTrendsFnServiceRoleDefaultPolicy5E799CA1": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ToolGetResistanceTrendsDlq671022BD",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::test-prefix-amr-athena-results",
+                "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                "arn:aws:s3:::test-prefix-amr-data-lake",
+                "arn:aws:s3:::test-prefix-amr-data-lake/*",
+              ],
+            },
+            {
+              "Action": [
+                "glue:GetDatabase",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartitions",
+                "glue:GetCatalog",
+                "glue:GetCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "athena:GetDataCatalog",
+                "athena:ListDataCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3tables:GetTableBucket",
+                "s3tables:ListTableBuckets",
+                "s3tables:GetTable",
+                "s3tables:ListTables",
+                "s3tables:GetTableData",
+                "s3tables:GetTableMetadataLocation",
+                "s3tables:GetNamespace",
+                "s3tables:ListNamespaces",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "lakeformation:GetDataAccess",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ToolGetResistanceTrendsFnServiceRoleDefaultPolicy5E799CA1",
+        "Roles": [
+          {
+            "Ref": "ToolGetResistanceTrendsFnServiceRole6D28DFB8",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ToolGetResistanceTrendsLogs0009132B": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-tool-get-resistance-trends",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ToolLookupGeneInfoDlqDA6CEBD0": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-tool-lookup-gene-info-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ToolLookupGeneInfoFn0BC799ED": {
+      "DependsOn": [
+        "ToolLookupGeneInfoFnServiceRoleDefaultPolicy2B1FEECD",
+        "ToolLookupGeneInfoFnServiceRole5EA6372C",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "8ecdce61c9bddd0f7b30086b76c7e992d1367751b72641ea64571ec36a87a398.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ToolLookupGeneInfoDlqDA6CEBD0",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+          },
+        },
+        "FunctionName": "test-prefix-amr-tool-lookup-gene-info",
+        "Handler": "lookup_gene_info.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ToolLookupGeneInfoLogsFB17B7FE",
+          },
+        },
+        "MemorySize": 512,
+        "Role": {
+          "Fn::GetAtt": [
+            "ToolLookupGeneInfoFnServiceRole5EA6372C",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ToolLookupGeneInfoFnServiceRole5EA6372C": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ToolLookupGeneInfoFnServiceRoleDefaultPolicy2B1FEECD": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ToolLookupGeneInfoDlqDA6CEBD0",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::test-prefix-amr-athena-results",
+                "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                "arn:aws:s3:::test-prefix-amr-data-lake",
+                "arn:aws:s3:::test-prefix-amr-data-lake/*",
+              ],
+            },
+            {
+              "Action": [
+                "glue:GetDatabase",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartitions",
+                "glue:GetCatalog",
+                "glue:GetCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "athena:GetDataCatalog",
+                "athena:ListDataCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3tables:GetTableBucket",
+                "s3tables:ListTableBuckets",
+                "s3tables:GetTable",
+                "s3tables:ListTables",
+                "s3tables:GetTableData",
+                "s3tables:GetTableMetadataLocation",
+                "s3tables:GetNamespace",
+                "s3tables:ListNamespaces",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "lakeformation:GetDataAccess",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ToolLookupGeneInfoFnServiceRoleDefaultPolicy2B1FEECD",
+        "Roles": [
+          {
+            "Ref": "ToolLookupGeneInfoFnServiceRole5EA6372C",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ToolLookupGeneInfoLogsFB17B7FE": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-tool-lookup-gene-info",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ToolQueryAmrProfilesDlqD1658E25": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-tool-query-amr-profiles-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ToolQueryAmrProfilesFnCE6F0EC6": {
+      "DependsOn": [
+        "ToolQueryAmrProfilesFnServiceRoleDefaultPolicyEF250F79",
+        "ToolQueryAmrProfilesFnServiceRoleF3A93D05",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "8ecdce61c9bddd0f7b30086b76c7e992d1367751b72641ea64571ec36a87a398.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ToolQueryAmrProfilesDlqD1658E25",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_CATALOG": "test-prefix_amr_db",
+            "ATHENA_DATABASE": "amr_db",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+          },
+        },
+        "FunctionName": "test-prefix-amr-tool-query-amr-profiles",
+        "Handler": "query_amr_profiles.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ToolQueryAmrProfilesLogsBB7C5543",
+          },
+        },
+        "MemorySize": 512,
+        "Role": {
+          "Fn::GetAtt": [
+            "ToolQueryAmrProfilesFnServiceRoleF3A93D05",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ToolQueryAmrProfilesFnServiceRoleDefaultPolicyEF250F79": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ToolQueryAmrProfilesDlqD1658E25",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": [
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::test-prefix-amr-athena-results",
+                "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                "arn:aws:s3:::test-prefix-amr-data-lake",
+                "arn:aws:s3:::test-prefix-amr-data-lake/*",
+              ],
+            },
+            {
+              "Action": [
+                "glue:GetDatabase",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartitions",
+                "glue:GetCatalog",
+                "glue:GetCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "athena:GetDataCatalog",
+                "athena:ListDataCatalogs",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "s3tables:GetTableBucket",
+                "s3tables:ListTableBuckets",
+                "s3tables:GetTable",
+                "s3tables:ListTables",
+                "s3tables:GetTableData",
+                "s3tables:GetTableMetadataLocation",
+                "s3tables:GetNamespace",
+                "s3tables:ListNamespaces",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "lakeformation:GetDataAccess",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3datalakecmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "SsmParameterValuetestprefixamrfoundations3tablescmkarnC96584B6F00A464EAD1953AFF4B05118Parameter",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ToolQueryAmrProfilesFnServiceRoleDefaultPolicyEF250F79",
+        "Roles": [
+          {
+            "Ref": "ToolQueryAmrProfilesFnServiceRoleF3A93D05",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ToolQueryAmrProfilesFnServiceRoleF3A93D05": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ToolQueryAmrProfilesLogsBB7C5543": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-tool-query-amr-profiles",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "UserPool6BA7E5F2": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "palisade_suppress": [
+          {
+            "id": "palisade.udd.cognito.userpool.selfregistration_enabled",
+            "reason": "AdminCreateUserConfig.AllowAdminCreateUserOnly=true is set. Hook evidence confirms this is COMPLIANT.",
+          },
+        ],
+      },
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "admin_only",
+              "Priority": 1,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "AutoVerifiedAttributes": [
+          "email",
+        ],
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "MfaConfiguration": "OFF",
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 12,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": true,
+            "RequireUppercase": true,
+          },
+        },
+        "Schema": [
+          {
+            "Mutable": true,
+            "Name": "email",
+            "Required": true,
+          },
+        ],
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolName": "test-prefix-amr-users",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "UserPoolAuthDomain95EAFE2A": {
+      "Properties": {
+        "Domain": "test-prefix-amr-auth",
+        "UserPoolId": {
+          "Ref": "UserPool6BA7E5F2",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolDomain",
+    },
+    "UserPoolWebClient4C9370B0": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "openid",
+          "email",
+          "profile",
+        ],
+        "CallbackURLs": [
+          "http://localhost:5173/callback",
+        ],
+        "ClientName": "test-prefix-amr-web",
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+        ],
+        "GenerateSecret": false,
+        "LogoutURLs": [
+          "http://localhost:5173",
+        ],
+        "PreventUserExistenceErrors": "ENABLED",
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "UserPool6BA7E5F2",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "WsApi88D84716": {
+      "Properties": {
+        "Description": "test-prefix AMR WebSocket API",
+        "Name": "test-prefix-amr-ws",
+        "ProtocolType": "WEBSOCKET",
+        "RouteSelectionExpression": "$request.body.action",
+      },
+      "Type": "AWS::ApiGatewayV2::Api",
+    },
+    "WsApiTestApiStackWsApiWsConnectAuth3C4747E2PermissionE745397F": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiWsAuthorizerFnC1C47DBA",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "WsApi88D84716",
+              },
+              "/authorizers/",
+              {
+                "Ref": "WsApiWsConnectAuth4DE22216",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WsApiWsConnectAuth4DE22216": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "AuthorizerType": "REQUEST",
+        "AuthorizerUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ApiWsAuthorizerFnC1C47DBA",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+        "IdentitySource": [
+          "route.request.querystring.token",
+        ],
+        "Name": "test-prefix-amr-ws-auth",
+      },
+      "Type": "AWS::ApiGatewayV2::Authorizer",
+    },
+    "WsApichatRoute745DB58A": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "AuthorizationType": "NONE",
+        "RouteKey": "chat",
+        "Target": {
+          "Fn::Join": [
+            "",
+            [
+              "integrations/",
+              {
+                "Ref": "WsApichatRouteChatIntegrationD82B47EC",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WsApichatRouteChatIntegrationD82B47EC": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ApiChatBridgeFnFDF7B5D6",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WsApichatRouteChatIntegrationPermission469CA491": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiChatBridgeFnFDF7B5D6",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "WsApi88D84716",
+              },
+              "/*chat",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WsApiconnectRoute3B404673": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "WsApiWsConnectAuth4DE22216",
+        },
+        "RouteKey": "$connect",
+        "Target": {
+          "Fn::Join": [
+            "",
+            [
+              "integrations/",
+              {
+                "Ref": "WsApiconnectRouteConnectIntegration2F600769",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WsApiconnectRouteConnectIntegration2F600769": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ApiChatBridgeFnFDF7B5D6",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WsApiconnectRouteConnectIntegrationPermission8566E48D": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiChatBridgeFnFDF7B5D6",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "WsApi88D84716",
+              },
+              "/*$connect",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WsApidefaultRoute688BE5A5": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "AuthorizationType": "NONE",
+        "RouteKey": "$default",
+        "Target": {
+          "Fn::Join": [
+            "",
+            [
+              "integrations/",
+              {
+                "Ref": "WsApidefaultRouteDefaultIntegration1EC8241A",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WsApidefaultRouteDefaultIntegration1EC8241A": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ApiChatBridgeFnFDF7B5D6",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WsApidefaultRouteDefaultIntegrationPermission18B8BD60": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiChatBridgeFnFDF7B5D6",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "WsApi88D84716",
+              },
+              "/*$default",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WsApidisconnectRoute52949C4E": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "AuthorizationType": "NONE",
+        "RouteKey": "$disconnect",
+        "Target": {
+          "Fn::Join": [
+            "",
+            [
+              "integrations/",
+              {
+                "Ref": "WsApidisconnectRouteDisconnectIntegrationD1E7983F",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WsApidisconnectRouteDisconnectIntegrationD1E7983F": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ApiChatBridgeFnFDF7B5D6",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WsApidisconnectRouteDisconnectIntegrationPermission65EE8698": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ApiChatBridgeFnFDF7B5D6",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:123456789012:",
+              {
+                "Ref": "WsApi88D84716",
+              },
+              "/*$disconnect",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WsConnectionsTable9E1AC3EB": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "connectionId",
+            "AttributeType": "S",
+          },
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "connectionId",
+            "KeyType": "HASH",
+          },
+        ],
+        "TableName": "test-prefix-amr-ws-connections",
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": true,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WsStage9AD02499": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "WsApi88D84716",
+        },
+        "AutoDeploy": true,
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGatewayV2::Stage",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

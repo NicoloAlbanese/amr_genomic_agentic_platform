@@ -1,0 +1,670 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`StorageStack matches snapshot 1`] = `
+{
+  "Outputs": {
+    "AthenaResultsBucketName": {
+      "Export": {
+        "Name": "test-prefix-athena-results-bucket-name",
+      },
+      "Value": {
+        "Ref": "athenaresultsbucketF3564413",
+      },
+    },
+    "AthenaWorkgroupName": {
+      "Export": {
+        "Name": "test-prefix-athena-workgroup-name",
+      },
+      "Value": "test-prefix-amr-wg",
+    },
+    "DataLakeBucketName": {
+      "Export": {
+        "Name": "test-prefix-data-lake-bucket-name",
+      },
+      "Value": {
+        "Ref": "datalakebucket6609A6F7",
+      },
+    },
+    "DynamoTableName": {
+      "Export": {
+        "Name": "test-prefix-dynamo-table-name",
+      },
+      "Value": {
+        "Ref": "isolatestatetable3C322FC0",
+      },
+    },
+    "GlueDatabaseName": {
+      "Export": {
+        "Name": "test-prefix-glue-database-name",
+      },
+      "Value": "test-prefix_amr_db",
+    },
+    "IcebergTableBucketArn": {
+      "Export": {
+        "Name": "test-prefix-iceberg-table-bucket-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "icebergtablebucket",
+          "TableBucketARN",
+        ],
+      },
+    },
+    "IcebergTableBucketName": {
+      "Export": {
+        "Name": "test-prefix-iceberg-table-bucket-name",
+      },
+      "Value": "test-prefix-amr-iceberg-tbl",
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "amrathenawg": {
+      "Properties": {
+        "Description": "test-prefix AMR Athena workgroup",
+        "Name": "test-prefix-amr-wg",
+        "WorkGroupConfiguration": {
+          "BytesScannedCutoffPerQuery": 10737418240,
+          "EnforceWorkGroupConfiguration": true,
+          "PublishCloudWatchMetricsEnabled": true,
+          "ResultConfiguration": {
+            "EncryptionConfiguration": {
+              "EncryptionOption": "SSE_KMS",
+              "KmsKey": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+            },
+            "OutputLocation": {
+              "Fn::Join": [
+                "",
+                [
+                  "s3://",
+                  {
+                    "Ref": "athenaresultsbucketF3564413",
+                  },
+                  "/",
+                ],
+              ],
+            },
+          },
+        },
+      },
+      "Type": "AWS::Athena::WorkGroup",
+    },
+    "amrgluecatalog": {
+      "Properties": {
+        "FederatedCatalog": {
+          "ConnectionName": "aws:s3tables",
+          "Identifier": {
+            "Fn::GetAtt": [
+              "icebergtablebucket",
+              "TableBucketARN",
+            ],
+          },
+        },
+        "Name": "test-prefix_amr_db",
+        "Tags": [
+          {
+            "Key": "apex:prefix",
+            "Value": "test-prefix",
+          },
+          {
+            "Key": "apex:run-id",
+            "Value": "test-run",
+          },
+        ],
+      },
+      "Type": "AWS::Glue::Catalog",
+    },
+    "amrprofilestable": {
+      "DependsOn": [
+        "icebergnamespace",
+      ],
+      "Properties": {
+        "IcebergMetadata": {
+          "IcebergPartitionSpec": {
+            "Fields": [
+              {
+                "FieldId": 1000,
+                "Name": "organism",
+                "SourceId": 6,
+                "Transform": "identity",
+              },
+              {
+                "FieldId": 1001,
+                "Name": "isolate_id_bucket",
+                "SourceId": 1,
+                "Transform": "bucket[16]",
+              },
+            ],
+            "SpecId": 0,
+          },
+          "IcebergSchema": {
+            "SchemaFieldList": [
+              {
+                "Id": 1,
+                "Name": "isolate_id",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 2,
+                "Name": "gene_id",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 3,
+                "Name": "gene_name",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 4,
+                "Name": "detection_tool",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 5,
+                "Name": "confidence",
+                "Required": false,
+                "Type": "double",
+              },
+              {
+                "Id": 6,
+                "Name": "organism",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 7,
+                "Name": "run_id",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 8,
+                "Name": "ts",
+                "Required": false,
+                "Type": "timestamp",
+              },
+            ],
+          },
+          "TableProperties": {
+            "format-version": "2",
+          },
+        },
+        "Namespace": "amr_db",
+        "OpenTableFormat": "ICEBERG",
+        "TableBucketARN": {
+          "Fn::GetAtt": [
+            "icebergtablebucket",
+            "TableBucketARN",
+          ],
+        },
+        "TableName": "amr_profiles",
+      },
+      "Type": "AWS::S3Tables::Table",
+    },
+    "astphenotypestable": {
+      "DependsOn": [
+        "icebergnamespace",
+      ],
+      "Properties": {
+        "IcebergMetadata": {
+          "IcebergSchema": {
+            "SchemaFieldList": [
+              {
+                "Id": 1,
+                "Name": "isolate_id",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 2,
+                "Name": "drug_class",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 3,
+                "Name": "mic",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 4,
+                "Name": "interpretation",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 5,
+                "Name": "source",
+                "Required": false,
+                "Type": "string",
+              },
+            ],
+          },
+          "TableProperties": {
+            "format-version": "2",
+          },
+        },
+        "Namespace": "amr_db",
+        "OpenTableFormat": "ICEBERG",
+        "TableBucketARN": {
+          "Fn::GetAtt": [
+            "icebergtablebucket",
+            "TableBucketARN",
+          ],
+        },
+        "TableName": "ast_phenotypes",
+      },
+      "Type": "AWS::S3Tables::Table",
+    },
+    "athenaresultsbucketF3564413": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+                "SSEAlgorithm": "aws:kms",
+              },
+            },
+          ],
+        },
+        "BucketName": "test-prefix-amr-athena-results",
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "ExpirationInDays": 30,
+              "Id": "expire-athena-results",
+              "Status": "Enabled",
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "athenaresultsbucketPolicy91E1621B": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "athenaresultsbucketF3564413",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "athenaresultsbucketF3564413",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "athenaresultsbucketF3564413",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "datalakebucket6609A6F7": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+                "SSEAlgorithm": "aws:kms",
+              },
+            },
+          ],
+        },
+        "BucketName": "test-prefix-amr-data-lake",
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Id": "archive-raw-to-glacier-ir",
+              "Prefix": "raw/",
+              "Status": "Enabled",
+              "Transitions": [
+                {
+                  "StorageClass": "GLACIER_IR",
+                  "TransitionInDays": 90,
+                },
+              ],
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "datalakebucketPolicy3E7B870A": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "datalakebucket6609A6F7",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "datalakebucket6609A6F7",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "datalakebucket6609A6F7",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "icebergnamespace": {
+      "DependsOn": [
+        "icebergtablebucket",
+      ],
+      "Properties": {
+        "Namespace": "amr_db",
+        "TableBucketARN": {
+          "Fn::GetAtt": [
+            "icebergtablebucket",
+            "TableBucketARN",
+          ],
+        },
+      },
+      "Type": "AWS::S3Tables::Namespace",
+    },
+    "icebergtablebucket": {
+      "Properties": {
+        "EncryptionConfiguration": {
+          "KMSKeyArn": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+          "SSEAlgorithm": "aws:kms",
+        },
+        "TableBucketName": "test-prefix-amr-iceberg-tbl",
+      },
+      "Type": "AWS::S3Tables::TableBucket",
+    },
+    "isolatemetadatatable": {
+      "DependsOn": [
+        "icebergnamespace",
+      ],
+      "Properties": {
+        "IcebergMetadata": {
+          "IcebergSchema": {
+            "SchemaFieldList": [
+              {
+                "Id": 1,
+                "Name": "isolate_id",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 2,
+                "Name": "organism",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 3,
+                "Name": "sra_accession",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 4,
+                "Name": "source_provenance",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 5,
+                "Name": "license",
+                "Required": false,
+                "Type": "string",
+              },
+              {
+                "Id": 6,
+                "Name": "ingestion_ts",
+                "Required": false,
+                "Type": "timestamp",
+              },
+            ],
+          },
+          "TableProperties": {
+            "format-version": "2",
+          },
+        },
+        "Namespace": "amr_db",
+        "OpenTableFormat": "ICEBERG",
+        "TableBucketARN": {
+          "Fn::GetAtt": [
+            "icebergtablebucket",
+            "TableBucketARN",
+          ],
+        },
+        "TableName": "isolate_metadata",
+      },
+      "Type": "AWS::S3Tables::Table",
+    },
+    "isolatestatetable3C322FC0": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "isolate_id",
+            "AttributeType": "S",
+          },
+          {
+            "AttributeName": "event_ts",
+            "AttributeType": "S",
+          },
+          {
+            "AttributeName": "run_id",
+            "AttributeType": "S",
+          },
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "DeletionProtectionEnabled": true,
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "run_id-index",
+            "KeySchema": [
+              {
+                "AttributeName": "run_id",
+                "KeyType": "HASH",
+              },
+            ],
+            "Projection": {
+              "ProjectionType": "ALL",
+            },
+          },
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "isolate_id",
+            "KeyType": "HASH",
+          },
+          {
+            "AttributeName": "event_ts",
+            "KeyType": "RANGE",
+          },
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true,
+        },
+        "SSESpecification": {
+          "KMSMasterKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000002",
+          "SSEEnabled": true,
+          "SSEType": "KMS",
+        },
+        "TableName": "test-prefix-amr-isolate-state",
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ssmathenaresultsbucket8A4F24D0": {
+      "Properties": {
+        "Name": "/test-prefix/amr/storage/athena-results-bucket-name",
+        "Type": "String",
+        "Value": {
+          "Ref": "athenaresultsbucketF3564413",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "ssmathenawgname193E88D6": {
+      "Properties": {
+        "Name": "/test-prefix/amr/storage/athena-workgroup-name",
+        "Type": "String",
+        "Value": "test-prefix-amr-wg",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "ssmdatalakebucketCD4A7E02": {
+      "Properties": {
+        "Name": "/test-prefix/amr/storage/data-lake-bucket-name",
+        "Type": "String",
+        "Value": {
+          "Ref": "datalakebucket6609A6F7",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "ssmdynamotablename341B4377": {
+      "Properties": {
+        "Name": "/test-prefix/amr/storage/dynamo-table-name",
+        "Type": "String",
+        "Value": {
+          "Ref": "isolatestatetable3C322FC0",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "ssmgluedbname87DAF634": {
+      "Properties": {
+        "Name": "/test-prefix/amr/storage/glue-database-name",
+        "Type": "String",
+        "Value": "test-prefix_amr_db",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "ssmicebergbucketarnCA716478": {
+      "Properties": {
+        "Name": "/test-prefix/amr/storage/iceberg-table-bucket-arn",
+        "Type": "String",
+        "Value": {
+          "Fn::GetAtt": [
+            "icebergtablebucket",
+            "TableBucketARN",
+          ],
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

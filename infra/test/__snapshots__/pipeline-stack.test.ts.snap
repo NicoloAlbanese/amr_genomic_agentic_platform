@@ -1,0 +1,2356 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PipelineStack matches snapshot 1`] = `
+{
+  "Outputs": {
+    "EcsClusterArn": {
+      "Export": {
+        "Name": "test-prefix-amr-ecs-cluster-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "PipelineCluster63B468F9",
+          "Arn",
+        ],
+      },
+    },
+    "GlueJobName": {
+      "Export": {
+        "Name": "test-prefix-amr-glue-job-name",
+      },
+      "Value": "test-prefix-amr-etl",
+    },
+    "SnsTopicArn": {
+      "Export": {
+        "Name": "test-prefix-amr-pipeline-sns-topic-arn",
+      },
+      "Value": {
+        "Ref": "NotificationsTopicE4AF40A8",
+      },
+    },
+    "StateMachineArn": {
+      "Export": {
+        "Name": "test-prefix-amr-pipeline-state-machine-arn",
+      },
+      "Value": {
+        "Ref": "AmrPipeline535350EC",
+      },
+    },
+    "VpcId": {
+      "Export": {
+        "Name": "test-prefix-amr-pipeline-vpc-id",
+      },
+      "Value": {
+        "Ref": "PipelineVpc0543904A",
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "AmrEtlJob": {
+      "Properties": {
+        "Command": {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": "s3://test-prefix-amr-data-lake/glue-scripts/amr_etl.py",
+        },
+        "DefaultArguments": {
+          "--TempDir": "s3://test-prefix-amr-data-lake/glue-tmp/",
+          "--conf": "spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog --conf spark.sql.catalog.s3tablesbucket.warehouse=arn:aws:s3tables:us-west-2:123456789012:bucket/test-prefix-amr-iceberg-tbl --conf spark.sql.catalog.s3tablesbucket.client.region=us-west-2",
+          "--data_lake_bucket": "test-prefix-amr-data-lake",
+          "--enable-continuous-cloudwatch-log": "true",
+          "--enable-glue-datacatalog": "true",
+          "--enable-structured-logging": "true",
+          "--extra-jars": "s3://test-prefix-amr-data-lake/glue-jars/s3-tables-catalog-runtime.jar",
+          "--glue_catalog_db": "test-prefix_amr_db",
+          "--harmonized_bucket": "test-prefix-amr-data-lake",
+          "--harmonized_key": "harmonized/PLACEHOLDER/PLACEHOLDER/hamronization.tsv",
+          "--isolate_id": "PLACEHOLDER",
+          "--job-language": "python",
+          "--license": "US Government public domain (NCBI SRA)",
+          "--organism": "Salmonella",
+          "--run_id": "test-run-id",
+          "--source_provenance": "NCBI SRA Public",
+          "--spark-event-logs-path": "s3://test-prefix-amr-data-lake/glue-spark-logs/",
+          "--sra_accession": "PLACEHOLDER",
+        },
+        "Description": "FR-006: hAMRonization TSV to Iceberg amr_profiles and isolate_metadata",
+        "ExecutionProperty": {
+          "MaxConcurrentRuns": 10,
+        },
+        "GlueVersion": "5.0",
+        "MaxRetries": 1,
+        "Name": "test-prefix-amr-etl",
+        "NumberOfWorkers": 2,
+        "Role": {
+          "Fn::GetAtt": [
+            "GlueJobRoleF1B69418",
+            "Arn",
+          ],
+        },
+        "Tags": {
+          "apex:prefix": "test-prefix",
+          "apex:run-id": "test-run-id",
+        },
+        "Timeout": 60,
+        "WorkerType": "G.1X",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "AmrPipeline535350EC": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "StateMachineRoleDefaultPolicy433448B5",
+        "StateMachineRole78EC082E",
+      ],
+      "Properties": {
+        "DefinitionString": {
+          "Fn::Join": [
+            "",
+            [
+              "{"StartAt":"ProcessIsolateBatch","States":{"ProcessIsolateBatch":{"Type":"Map","ResultPath":"$.results","Next":"PublishSuccess","Catch":[{"ErrorEquals":["States.ALL"],"ResultPath":"$","Next":"AddErrorContext"}],"ItemsPath":"$.isolates","ItemProcessor":{"ProcessorConfig":{"Mode":"INLINE"},"StartAt":"ValidateIngestion","States":{"ValidateIngestion":{"Next":"DeduplicateIsolate","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.validation","Resource":"",
+              {
+                "Fn::GetAtt": [
+                  "IngestionValidator7EF8EB2D",
+                  "Arn",
+                ],
+              },
+              ""},"DeduplicateIsolate":{"Next":"IsDuplicate","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.dedup","Resource":"",
+              {
+                "Fn::GetAtt": [
+                  "IsolateDeduper9E2D82A6",
+                  "Arn",
+                ],
+              },
+              ""},"IsDuplicate":{"Type":"Choice","Choices":[{"Variable":"$.dedup.skipped","BooleanEquals":true,"Next":"SkipDuplicate"}],"Default":"RunSraFetcher"},"RunSraFetcher":{"Next":"PrepAmrInput","Type":"Task","ResultPath":"$.sraFetch","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::ecs:runTask.sync","Parameters":{"Cluster":"",
+              {
+                "Fn::GetAtt": [
+                  "PipelineCluster63B468F9",
+                  "Arn",
+                ],
+              },
+              "","TaskDefinition":"test-prefix-amr-sra-fetcher","NetworkConfiguration":{"AwsvpcConfiguration":{"Subnets":["",
+              {
+                "Ref": "PipelineVpcPrivateSubnet1Subnet442DCECC",
+              },
+              "","",
+              {
+                "Ref": "PipelineVpcPrivateSubnet2SubnetE21FED10",
+              },
+              ""],"SecurityGroups":["",
+              {
+                "Fn::GetAtt": [
+                  "EcsSg17B4B0B3",
+                  "GroupId",
+                ],
+              },
+              ""]}},"Overrides":{"ContainerOverrides":[{"Name":"sra-fetcher","Environment":[{"Name":"SRA_ACCESSION","Value.$":"$.accession"},{"Name":"ISOLATE_ID","Value.$":"$.isolate_id"},{"Name":"S3_OUTPUT_BUCKET","Value":"test-prefix-amr-data-lake"}]}]},"LaunchType":"FARGATE"}},"PrepAmrInput":{"Type":"Pass","Parameters":{"isolate_id.$":"$.isolate_id","run_id.$":"$.run_id","accession.$":"$.accession","source_provenance.$":"$.source_provenance","license.$":"$.license","read1.$":"States.Format('s3://test-prefix-amr-data-lake/raw/{}/{}_1.fastq.gz', $.isolate_id, $.accession)","read2.$":"States.Format('s3://test-prefix-amr-data-lake/raw/{}/{}_2.fastq.gz', $.isolate_id, $.accession)","amrOutputUri.$":"States.Format('s3://test-prefix-amr-data-lake/omics-output/{}/{}/', $.run_id, $.isolate_id)","amrOutputPrefix.$":"States.Format('omics-output/{}/{}/', $.run_id, $.isolate_id)","runName.$":"States.Format('amr-{}', $.isolate_id)"},"Next":"GetAmrWorkflowId"},"GetAmrWorkflowId":{"Next":"StartAmrRun","Type":"Task","ResultPath":"$.workflowIdParam","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:ssm:getParameter","Parameters":{"Name":"/test-prefix/amr/workflows/amr-id"}},"StartAmrRun":{"Next":"WaitAmr","Type":"Task","ResultPath":"$.amrRun","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:omics:startRun","Parameters":{"WorkflowId.$":"$.workflowIdParam.Parameter.Value","WorkflowType":"PRIVATE","RoleArn":"arn:aws:iam::123456789012:role/test-omics-role","OutputUri.$":"$.amrOutputUri","Name.$":"$.runName","StorageType":"DYNAMIC","LogLevel":"ALL","RequestId.$":"$.run_id","Parameters":{"read1.$":"$.read1","read2.$":"$.read2","isolate_id.$":"$.isolate_id","organism":"Salmonella","assembly_container":"123456789012.dkr.ecr.us-west-2.amazonaws.com/cdk-hnb659fds-container-assets-123456789012-us-west-2:assembly","amr_container":"123456789012.dkr.ecr.us-west-2.amazonaws.com/cdk-hnb659fds-container-assets-123456789012-us-west-2:amr"}}},"WaitAmr":{"Type":"Wait","Seconds":60,"Next":"GetAmrRunStatus"},"GetAmrRunStatus":{"Next":"AmrRunComplete","Type":"Task","ResultPath":"$.amrStatus","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::aws-sdk:omics:getRun","Parameters":{"Id.$":"$.amrRun.Id"}},"AmrRunComplete":{"Type":"Choice","Choices":[{"Variable":"$.amrStatus.Status","StringEquals":"COMPLETED","Next":"PrepHamrInput"},{"Variable":"$.amrStatus.Status","StringEquals":"FAILED","Next":"AmrRunFailed"},{"Variable":"$.amrStatus.Status","StringEquals":"CANCELLED","Next":"AmrRunFailed"}],"Default":"WaitAmr"},"PrepHamrInput":{"Type":"Pass","Parameters":{"isolate_id.$":"$.isolate_id","run_id.$":"$.run_id","accession.$":"$.accession","source_provenance.$":"$.source_provenance","license.$":"$.license","amr_output_prefix.$":"$.amrOutputPrefix","data_lake_bucket":"test-prefix-amr-data-lake","organism":"Salmonella"},"Next":"RunHamronization"},"RunHamronization":{"Next":"RunGlueEtl","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.hamronization","Resource":"",
+              {
+                "Fn::GetAtt": [
+                  "HamronizationRunner9E244CEB",
+                  "Arn",
+                ],
+              },
+              ""},"RunGlueEtl":{"Next":"ComputeConcordance","Type":"Task","ResultPath":"$.glueEtl","Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::glue:startJobRun.sync","Parameters":{"JobName":"test-prefix-amr-etl","Arguments":{"--harmonized_key.$":"$.hamronization.harmonized_key","--harmonized_bucket.$":"$.hamronization.harmonized_bucket","--isolate_id.$":"$.isolate_id","--run_id.$":"$.run_id","--sra_accession.$":"$.accession","--source_provenance.$":"$.source_provenance","--license.$":"$.license","--glue_catalog_db":"test-prefix_amr_db","--data_lake_bucket":"test-prefix-amr-data-lake","--organism":"Salmonella"}}},"ComputeConcordance":{"End":true,"Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.concordance","Resource":"",
+              {
+                "Fn::GetAtt": [
+                  "ConcordanceComputerD83BB309",
+                  "Arn",
+                ],
+              },
+              ""},"AmrRunFailed":{"Type":"Fail","Error":"AmrRunFailed","Cause":"HealthOmics AMR genomics run failed"},"SkipDuplicate":{"Type":"Pass","Result":{"skipped":true},"ResultPath":"$.dedup","End":true}}},"MaxConcurrency":10},"PublishSuccess":{"End":true,"Type":"Task","ResultPath":null,"Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::sns:publish","Parameters":{"TopicArn":"",
+              {
+                "Ref": "NotificationsTopicE4AF40A8",
+              },
+              "","Message":{"run_id.$":"$$.Execution.Name","status":"COMPLETED","message":"AMR pipeline batch completed successfully"}}},"AddErrorContext":{"Type":"Pass","Parameters":{"error.$":"$.Error","cause.$":"$.Cause","stage":"pipeline","run_id.$":"$$.Execution.Name"},"Next":"PublishFailure"},"PublishFailure":{"End":true,"Type":"Task","ResultPath":null,"Resource":"arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::sns:publish","Parameters":{"TopicArn":"",
+              {
+                "Ref": "NotificationsTopicE4AF40A8",
+              },
+              "","Message":{"run_id.$":"$.run_id","status":"FAILED","error.$":"$.error","cause.$":"$.cause","stage.$":"$.stage"}}}},"TimeoutSeconds":172800}",
+            ],
+          ],
+        },
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "SfnLogGroup4E29B71B",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "IncludeExecutionData": true,
+          "Level": "ALL",
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "StateMachineRole78EC082E",
+            "Arn",
+          ],
+        },
+        "StateMachineName": "test-prefix-amr-pipeline",
+        "StateMachineType": "STANDARD",
+        "TracingConfiguration": {
+          "Enabled": true,
+        },
+      },
+      "Type": "AWS::StepFunctions::StateMachine",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ConcordanceComputerD83BB309": {
+      "DependsOn": [
+        "ConcordanceRoleDefaultPolicyDC603C00",
+        "ConcordanceRole60D03D5B",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "4a40311b64c7a97fab66b31afe49925908c6935d6439c180afc562147bf07677.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "concordancecomputerDlq405380DB",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DATA_LAKE_BUCKET": "test-prefix-amr-data-lake",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "GLUE_DATABASE": "test-prefix_amr_db",
+            "RESOURCE_PREFIX": "test-prefix",
+          },
+        },
+        "FunctionName": "test-prefix-amr-concordance-computer",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "concordancecomputerLg13629DB8",
+          },
+        },
+        "ReservedConcurrentExecutions": 5,
+        "Role": {
+          "Fn::GetAtt": [
+            "ConcordanceRole60D03D5B",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 600,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ConcordanceRole60D03D5B": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "athena:StartQueryExecution",
+                    "athena:GetQueryExecution",
+                    "athena:GetQueryResults",
+                    "athena:StopQueryExecution",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:athena:us-west-2:123456789012:workgroup/test-prefix-amr-wg",
+                },
+                {
+                  "Action": [
+                    "glue:GetTable",
+                    "glue:GetDatabase",
+                    "glue:GetPartitions",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:glue:us-west-2:123456789012:catalog",
+                    "arn:aws:glue:us-west-2:123456789012:database/*",
+                    "arn:aws:glue:us-west-2:123456789012:table/*/*",
+                  ],
+                },
+                {
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:ListBucket",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:s3:::test-prefix-amr-athena-results",
+                    "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                    "arn:aws:s3:::test-prefix-amr-data-lake",
+                    "arn:aws:s3:::test-prefix-amr-data-lake/*",
+                  ],
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000002",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000005",
+                  ],
+                },
+                {
+                  "Action": "sqs:SendMessage",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "concordancecomputerDlq405380DB",
+                      "Arn",
+                    ],
+                  },
+                },
+                {
+                  "Action": [
+                    "s3tables:GetTableBucket",
+                    "s3tables:ListTableBuckets",
+                    "s3tables:GetTable",
+                    "s3tables:ListTables",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:s3tables:us-west-2:123456789012:bucket/test-prefix-amr-iceberg-tbl",
+                    "arn:aws:s3tables:us-west-2:123456789012:bucket/test-prefix-amr-iceberg-tbl/*",
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-concordance-computer",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ConcordanceRoleDefaultPolicyDC603C00": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "concordancecomputerDlq405380DB",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ConcordanceRoleDefaultPolicyDC603C00",
+        "Roles": [
+          {
+            "Ref": "ConcordanceRole60D03D5B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DeduperRole92626B9B": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "dynamodb:PutItem",
+                    "dynamodb:GetItem",
+                    "dynamodb:UpdateItem",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:dynamodb:us-west-2:123456789012:table/test-prefix-amr-isolate-state",
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000004",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+                  ],
+                },
+                {
+                  "Action": "sqs:SendMessage",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "isolatededuperDlq41D58471",
+                      "Arn",
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-isolate-deduper",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "DeduperRoleDefaultPolicy9B541CB9": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "isolatededuperDlq41D58471",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DeduperRoleDefaultPolicy9B541CB9",
+        "Roles": [
+          {
+            "Ref": "DeduperRole92626B9B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "EcsSg17B4B0B3": {
+      "Properties": {
+        "GroupDescription": "test-prefix-amr-sra-fetcher task SG",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "GlueJobRoleF1B69418": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSGlueServiceRole",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:ListBucket",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:s3:::test-prefix-amr-data-lake",
+                    "arn:aws:s3:::test-prefix-amr-data-lake/*",
+                    "arn:aws:s3:::test-prefix-amr-athena-results",
+                    "arn:aws:s3:::test-prefix-amr-athena-results/*",
+                  ],
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                    "kms:ReEncrypt*",
+                    "kms:CreateGrant",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000002",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000005",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000006",
+                  ],
+                },
+                {
+                  "Action": [
+                    "glue:GetTable",
+                    "glue:GetDatabase",
+                    "glue:GetPartitions",
+                    "glue:UpdateTable",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:glue:us-west-2:123456789012:catalog",
+                    "arn:aws:glue:us-west-2:123456789012:database/*",
+                    "arn:aws:glue:us-west-2:123456789012:table/*/*",
+                  ],
+                },
+                {
+                  "Action": [
+                    "s3tables:GetTableBucket",
+                    "s3tables:ListTableBuckets",
+                    "s3tables:GetNamespace",
+                    "s3tables:ListNamespaces",
+                    "s3tables:CreateNamespace",
+                    "s3tables:GetTable",
+                    "s3tables:ListTables",
+                    "s3tables:CreateTable",
+                    "s3tables:UpdateTable",
+                    "s3tables:GetTableData",
+                    "s3tables:PutTableData",
+                    "s3tables:GetTableMetadataLocation",
+                    "s3tables:UpdateTableMetadataLocation",
+                    "s3tables:GetTableMaintenanceConfiguration",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:s3tables:us-west-2:123456789012:bucket/test-prefix-amr-iceberg-tbl",
+                    "arn:aws:s3tables:us-west-2:123456789012:bucket/test-prefix-amr-iceberg-tbl/*",
+                  ],
+                },
+                {
+                  "Action": "lakeformation:GetDataAccess",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:logs:us-west-2:123456789012:log-group:/aws-glue/*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-glue-etl",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "HamronizationRoleDefaultPolicy8068D9A9": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "hamronizationrunnerDlqC7646013",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "HamronizationRoleDefaultPolicy8068D9A9",
+        "Roles": [
+          {
+            "Ref": "HamronizationRoleE294B45B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "HamronizationRoleE294B45B": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:ListBucket",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:s3:::test-prefix-amr-data-lake",
+                    "arn:aws:s3:::test-prefix-amr-data-lake/*",
+                  ],
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000005",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+                  ],
+                },
+                {
+                  "Action": "sqs:SendMessage",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "hamronizationrunnerDlqC7646013",
+                      "Arn",
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-hamronization-runner",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "HamronizationRunner9E244CEB": {
+      "DependsOn": [
+        "HamronizationRoleDefaultPolicy8068D9A9",
+        "HamronizationRoleE294B45B",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "467d85d2dc74f4b883a4749ca6225cbbb88fe0b71d81a9231c4f8ab5916aa1f9.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "hamronizationrunnerDlqC7646013",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DATA_LAKE_BUCKET": "test-prefix-amr-data-lake",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "GLUE_DATABASE": "test-prefix_amr_db",
+            "RESOURCE_PREFIX": "test-prefix",
+          },
+        },
+        "FunctionName": "test-prefix-amr-hamronization-runner",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "hamronizationrunnerLg6975D6A2",
+          },
+        },
+        "ReservedConcurrentExecutions": 5,
+        "Role": {
+          "Fn::GetAtt": [
+            "HamronizationRoleE294B45B",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 300,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "IngestionValidator7EF8EB2D": {
+      "DependsOn": [
+        "ValidatorRoleDefaultPolicy6189A311",
+        "ValidatorRole625282C1",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "259abdb6868f711fe498ab965a3e01f3358ebcb8308ed828f25ceaf770837219.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "ingestionvalidatorDlqAB38D622",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ALLOWED_SOURCES": "ncbi-sra-public,ncbi-trace-public",
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DATA_LAKE_BUCKET": "test-prefix-amr-data-lake",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "GLUE_DATABASE": "test-prefix_amr_db",
+            "RESOURCE_PREFIX": "test-prefix",
+          },
+        },
+        "FunctionName": "test-prefix-amr-ingestion-validator",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "ingestionvalidatorLg9D9C7C75",
+          },
+        },
+        "ReservedConcurrentExecutions": 5,
+        "Role": {
+          "Fn::GetAtt": [
+            "ValidatorRole625282C1",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "IsolateDeduper9E2D82A6": {
+      "DependsOn": [
+        "DeduperRoleDefaultPolicy9B541CB9",
+        "DeduperRole92626B9B",
+      ],
+      "Properties": {
+        "Architectures": [
+          "arm64",
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-west-2",
+          "S3Key": "16d967014fcf2b2eb2322d8f18ac68cd8606d81ee7f1f9f528f4d1e51a787b87.zip",
+        },
+        "DeadLetterConfig": {
+          "TargetArn": {
+            "Fn::GetAtt": [
+              "isolatededuperDlq41D58471",
+              "Arn",
+            ],
+          },
+        },
+        "Environment": {
+          "Variables": {
+            "ATHENA_RESULTS_BUCKET": "test-prefix-amr-athena-results",
+            "ATHENA_WORKGROUP": "test-prefix-amr-wg",
+            "DATA_LAKE_BUCKET": "test-prefix-amr-data-lake",
+            "DYNAMO_TABLE_NAME": "test-prefix-amr-isolate-state",
+            "GLUE_DATABASE": "test-prefix_amr_db",
+            "RESOURCE_PREFIX": "test-prefix",
+          },
+        },
+        "FunctionName": "test-prefix-amr-isolate-deduper",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "isolatededuperLg051CF94D",
+          },
+        },
+        "ReservedConcurrentExecutions": 5,
+        "Role": {
+          "Fn::GetAtt": [
+            "DeduperRole92626B9B",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.12",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "NotificationsTopicE4AF40A8": {
+      "Properties": {
+        "DisplayName": "test-prefix AMR Pipeline Notifications",
+        "KmsMasterKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+        "TopicName": "test-prefix-amr-pipeline-notifications",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "PipelineCluster63B468F9": {
+      "Properties": {
+        "ClusterName": "test-prefix-amr-pipeline",
+        "ClusterSettings": [
+          {
+            "Name": "containerInsights",
+            "Value": "enabled",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::Cluster",
+    },
+    "PipelineVpc0543904A": {
+      "Properties": {
+        "CidrBlock": "10.4.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-prefix-amr-pipeline-vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "PipelineVpcIGW3FA4A524": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "test-prefix-amr-pipeline-vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "PipelineVpcPrivateSubnet1DefaultRouteC225ACC6": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "PipelineVpcPublicSubnet1NATGatewayA4388274",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet1RouteTable6D8B603D",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPrivateSubnet1RouteTable6D8B603D": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPrivateSubnet1RouteTableAssociation791F1EF2": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet1RouteTable6D8B603D",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPrivateSubnet1Subnet442DCECC",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPrivateSubnet1Subnet442DCECC": {
+      "Properties": {
+        "AvailabilityZone": "dummy1a",
+        "CidrBlock": "10.4.2.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPrivateSubnet2DefaultRouteF3A9A6B9": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "PipelineVpcPublicSubnet1NATGatewayA4388274",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet2RouteTable9A31913F",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPrivateSubnet2RouteTable9A31913F": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPrivateSubnet2RouteTableAssociationC502A5A4": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet2RouteTable9A31913F",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPrivateSubnet2SubnetE21FED10",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPrivateSubnet2SubnetE21FED10": {
+      "Properties": {
+        "AvailabilityZone": "dummy1b",
+        "CidrBlock": "10.4.3.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPublicSubnet1DefaultRoute44F3E91D": {
+      "DependsOn": [
+        "PipelineVpcVPCGW3256101F",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet1RouteTableE9A67515",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPublicSubnet1EIPBD0800F9": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "PipelineVpcPublicSubnet1NATGatewayA4388274": {
+      "DependsOn": [
+        "PipelineVpcPublicSubnet1DefaultRoute44F3E91D",
+        "PipelineVpcPublicSubnet1RouteTableAssociation6D13736B",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "PipelineVpcPublicSubnet1EIPBD0800F9",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet1Subnet26FF83E2",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "PipelineVpcPublicSubnet1RouteTableAssociation6D13736B": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet1RouteTableE9A67515",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet1Subnet26FF83E2",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPublicSubnet1RouteTableE9A67515": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPublicSubnet1Subnet26FF83E2": {
+      "Properties": {
+        "AvailabilityZone": "dummy1a",
+        "CidrBlock": "10.4.0.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPublicSubnet2DefaultRoute04C861A0": {
+      "DependsOn": [
+        "PipelineVpcVPCGW3256101F",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet2RouteTable5219ED4D",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPublicSubnet2RouteTable5219ED4D": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPublicSubnet2RouteTableAssociation54D39738": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet2RouteTable5219ED4D",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet2Subnet64F58E18",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPublicSubnet2Subnet64F58E18": {
+      "Properties": {
+        "AvailabilityZone": "dummy1b",
+        "CidrBlock": "10.4.1.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestPipelineStack/PipelineVpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcVPCGW3256101F": {
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "SchedulerRole59E73443": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "scheduler.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "states:StartExecution",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Ref": "AmrPipeline535350EC",
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-pipeline-scheduler",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SfnLogGroup4E29B71B": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+        "LogGroupName": "/aws/states/test-prefix-amr-pipeline",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "SraFetcherExecRole08D72B41": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+              ],
+            ],
+          },
+        ],
+        "RoleName": "test-prefix-amr-sra-fetcher-exec",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SraFetcherExecRoleDefaultPolicyBF852100": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SraFetcherLogGroupF8694FA7",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "SraFetcherExecRoleDefaultPolicyBF852100",
+        "Roles": [
+          {
+            "Ref": "SraFetcherExecRole08D72B41",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "SraFetcherLogGroupF8694FA7": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+        "LogGroupName": "/aws/ecs/test-prefix-amr-sra-fetcher",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "SraFetcherTask962B97F7": {
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Command": [
+              "chown 1000:1000 /tmp/fastq && chmod 0770 /tmp/fastq",
+            ],
+            "EntryPoint": [
+              "/bin/sh",
+              "-c",
+            ],
+            "Essential": false,
+            "Image": "123456789012.dkr.ecr.us-west-2.amazonaws.com/cdk-hnb659fds-container-assets-123456789012-us-west-2:abc123",
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "SraFetcherLogGroupF8694FA7",
+                },
+                "awslogs-region": "us-west-2",
+                "awslogs-stream-prefix": "scratch-init",
+              },
+            },
+            "MountPoints": [
+              {
+                "ContainerPath": "/tmp/fastq",
+                "ReadOnly": false,
+                "SourceVolume": "scratch",
+              },
+            ],
+            "Name": "scratch-init",
+            "ReadonlyRootFilesystem": true,
+            "User": "0:0",
+          },
+          {
+            "DependsOn": [
+              {
+                "Condition": "SUCCESS",
+                "ContainerName": "scratch-init",
+              },
+            ],
+            "Environment": [
+              {
+                "Name": "OUTPUT_DIR",
+                "Value": "/tmp/fastq",
+              },
+              {
+                "Name": "AWS_DEFAULT_REGION",
+                "Value": "us-west-2",
+              },
+              {
+                "Name": "S3_OUTPUT_BUCKET",
+                "Value": "test-prefix-amr-data-lake",
+              },
+            ],
+            "Essential": true,
+            "Image": "123456789012.dkr.ecr.us-west-2.amazonaws.com/cdk-hnb659fds-container-assets-123456789012-us-west-2:abc123",
+            "LinuxParameters": {
+              "Capabilities": {},
+              "InitProcessEnabled": true,
+            },
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "SraFetcherLogGroupF8694FA7",
+                },
+                "awslogs-region": "us-west-2",
+                "awslogs-stream-prefix": "sra-fetcher",
+              },
+            },
+            "MountPoints": [
+              {
+                "ContainerPath": "/tmp/fastq",
+                "ReadOnly": false,
+                "SourceVolume": "scratch",
+              },
+            ],
+            "Name": "sra-fetcher",
+            "Privileged": false,
+            "ReadonlyRootFilesystem": true,
+            "User": "1000:1000",
+          },
+        ],
+        "Cpu": "2048",
+        "EphemeralStorage": {
+          "SizeInGiB": 40,
+        },
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "SraFetcherExecRole08D72B41",
+            "Arn",
+          ],
+        },
+        "Family": "test-prefix-amr-sra-fetcher",
+        "Memory": "4096",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE",
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "SraFetcherTaskRole472B0A03",
+            "Arn",
+          ],
+        },
+        "Volumes": [
+          {
+            "Name": "scratch",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::TaskDefinition",
+    },
+    "SraFetcherTaskRole472B0A03": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "s3:PutObject",
+                    "s3:GetObject",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:s3:::test-prefix-amr-data-lake/raw/*",
+                },
+                {
+                  "Action": "s3:ListBucket",
+                  "Condition": {
+                    "StringLike": {
+                      "s3:prefix": [
+                        "raw/*",
+                      ],
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:s3:::test-prefix-amr-data-lake",
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000005",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "DataLakeWrite",
+          },
+        ],
+        "RoleName": "test-prefix-amr-sra-fetcher-task",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SsmGlueJobDE631FF7": {
+      "Properties": {
+        "Name": "/test-prefix/amr/pipeline/glue-job-name",
+        "Type": "String",
+        "Value": "test-prefix-amr-etl",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmSmArnC85A073D": {
+      "Properties": {
+        "Name": "/test-prefix/amr/pipeline/state-machine-arn",
+        "Type": "String",
+        "Value": {
+          "Ref": "AmrPipeline535350EC",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmSnsTopic9FC0A9E0": {
+      "Properties": {
+        "Name": "/test-prefix/amr/pipeline/sns-topic-arn",
+        "Type": "String",
+        "Value": {
+          "Ref": "NotificationsTopicE4AF40A8",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "SsmVpcIdE4E9FD26": {
+      "Properties": {
+        "Name": "/test-prefix/amr/pipeline/vpc-id",
+        "Type": "String",
+        "Value": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "StateMachineRole78EC082E": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "states.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "lambda:InvokeFunction",
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "IngestionValidator7EF8EB2D",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "IsolateDeduper9E2D82A6",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "HamronizationRunner9E244CEB",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "ConcordanceComputerD83BB309",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+                {
+                  "Action": "ecs:RunTask",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Ref": "SraFetcherTask962B97F7",
+                  },
+                },
+                {
+                  "Action": [
+                    "ecs:StopTask",
+                    "ecs:DescribeTasks",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": "iam:PassRole",
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "SraFetcherTaskRole472B0A03",
+                        "Arn",
+                      ],
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "SraFetcherExecRole08D72B41",
+                        "Arn",
+                      ],
+                    },
+                  ],
+                },
+                {
+                  "Action": [
+                    "omics:StartRun",
+                    "omics:GetRun",
+                    "omics:ListRuns",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": "ssm:GetParameter",
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:ssm:us-west-2:123456789012:parameter/test-prefix/amr/workflows/amr-id",
+                },
+                {
+                  "Action": "iam:PassRole",
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:iam::123456789012:role/test-omics-role",
+                },
+                {
+                  "Action": [
+                    "glue:StartJobRun",
+                    "glue:GetJobRun",
+                    "glue:GetJob",
+                    "glue:BatchStopJobRun",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:glue:us-west-2:123456789012:job/test-prefix-amr-etl",
+                },
+                {
+                  "Action": "sns:Publish",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Ref": "NotificationsTopicE4AF40A8",
+                  },
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000002",
+                  ],
+                },
+                {
+                  "Action": [
+                    "events:PutTargets",
+                    "events:PutRule",
+                    "events:DescribeRule",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:events:us-west-2:123456789012:rule/StepFunctionsGetEventsForECSTaskRule",
+                },
+                {
+                  "Action": [
+                    "logs:CreateLogDelivery",
+                    "logs:GetLogDelivery",
+                    "logs:UpdateLogDelivery",
+                    "logs:DeleteLogDelivery",
+                    "logs:ListLogDeliveries",
+                    "logs:PutLogEvents",
+                    "logs:PutResourcePolicy",
+                    "logs:DescribeResourcePolicies",
+                    "logs:DescribeLogGroups",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": [
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": [
+                    "ec2:DescribeSubnets",
+                    "ec2:DescribeSecurityGroups",
+                    "ec2:DescribeVpcs",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-pipeline-sfn",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "StateMachineRoleDefaultPolicy433448B5": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "NotificationsTopicE4AF40A8",
+              },
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "IngestionValidator7EF8EB2D",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "IngestionValidator7EF8EB2D",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "IsolateDeduper9E2D82A6",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "IsolateDeduper9E2D82A6",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "ecs:RunTask",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Fn::Select": [
+                        1,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Ref": "SraFetcherTask962B97F7",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    ":",
+                    {
+                      "Fn::Select": [
+                        2,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Ref": "SraFetcherTask962B97F7",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    ":",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Ref": "SraFetcherTask962B97F7",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    ":",
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Ref": "SraFetcherTask962B97F7",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    ":",
+                    {
+                      "Fn::Select": [
+                        0,
+                        {
+                          "Fn::Split": [
+                            "/",
+                            {
+                              "Fn::Select": [
+                                5,
+                                {
+                                  "Fn::Split": [
+                                    ":",
+                                    {
+                                      "Ref": "SraFetcherTask962B97F7",
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    "/",
+                    {
+                      "Fn::Select": [
+                        1,
+                        {
+                          "Fn::Split": [
+                            "/",
+                            {
+                              "Fn::Select": [
+                                5,
+                                {
+                                  "Fn::Split": [
+                                    ":",
+                                    {
+                                      "Ref": "SraFetcherTask962B97F7",
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    ":*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "ecs:StopTask",
+                "ecs:DescribeTasks",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "SraFetcherTaskRole472B0A03",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::GetAtt": [
+                    "SraFetcherExecRole08D72B41",
+                    "Arn",
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "events:PutTargets",
+                "events:PutRule",
+                "events:DescribeRule",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":events:us-west-2:123456789012:rule/StepFunctionsGetEventsForECSTaskRule",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "ssm:getParameter",
+              "Effect": "Allow",
+              "Resource": "arn:aws:ssm:us-west-2:123456789012:parameter/test-prefix/amr/workflows/amr-id",
+            },
+            {
+              "Action": "omics:startRun",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "omics:getRun",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HamronizationRunner9E244CEB",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HamronizationRunner9E244CEB",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "glue:StartJobRun",
+                "glue:GetJobRun",
+                "glue:GetJobRuns",
+                "glue:BatchStopJobRun",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":glue:us-west-2:123456789012:job/test-prefix-amr-etl",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ConcordanceComputerD83BB309",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ConcordanceComputerD83BB309",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries",
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+                "xray:GetSamplingRules",
+                "xray:GetSamplingTargets",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "StateMachineRoleDefaultPolicy433448B5",
+        "Roles": [
+          {
+            "Ref": "StateMachineRole78EC082E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ValidatorRole625282C1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "dynamodb:PutItem",
+                    "dynamodb:GetItem",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:dynamodb:us-west-2:123456789012:table/test-prefix-amr-isolate-state",
+                },
+                {
+                  "Action": [
+                    "kms:Decrypt",
+                    "kms:GenerateDataKey*",
+                    "kms:DescribeKey",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000004",
+                    "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+                  ],
+                },
+                {
+                  "Action": "sqs:SendMessage",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "ingestionvalidatorDlqAB38D622",
+                      "Arn",
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "P",
+          },
+        ],
+        "RoleName": "test-prefix-amr-ingestion-validator",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ValidatorRoleDefaultPolicy6189A311": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ingestionvalidatorDlqAB38D622",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ValidatorRoleDefaultPolicy6189A311",
+        "Roles": [
+          {
+            "Ref": "ValidatorRole625282C1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "WeeklySchedule": {
+      "Properties": {
+        "Description": "test-prefix AMR weekly pipeline trigger Mon 06:00 UTC",
+        "FlexibleTimeWindow": {
+          "Mode": "OFF",
+        },
+        "Name": "test-prefix-amr-weekly",
+        "ScheduleExpression": "cron(0 6 ? * MON *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "ENABLED",
+        "Target": {
+          "Arn": {
+            "Ref": "AmrPipeline535350EC",
+          },
+          "Input": "{"isolates":[{"isolate_id":"isolate-SRR1583085","accession":"SRR1583085","source":"ncbi-sra-public","source_provenance":"NCBI SRA Public","license":"US Government public domain (NCBI SRA)","run_id":"weekly-test-run-id"}],"run_id":"weekly-test-run-id","triggeredBy":"scheduler"}",
+          "RetryPolicy": {
+            "MaximumEventAgeInSeconds": 3600,
+            "MaximumRetryAttempts": 2,
+          },
+          "RoleArn": {
+            "Fn::GetAtt": [
+              "SchedulerRole59E73443",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::Scheduler::Schedule",
+    },
+    "concordancecomputerDlq405380DB": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-concordance-computer-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "concordancecomputerLg13629DB8": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-concordance-computer",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "hamronizationrunnerDlqC7646013": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-hamronization-runner-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "hamronizationrunnerLg6975D6A2": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-hamronization-runner",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ingestionvalidatorDlqAB38D622": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-ingestion-validator-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ingestionvalidatorLg9D9C7C75": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-ingestion-validator",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "isolatededuperDlq41D58471": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
+        "MessageRetentionPeriod": 1209600,
+        "QueueName": "test-prefix-amr-isolate-deduper-dlq",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "isolatededuperLg051CF94D": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000003",
+        "LogGroupName": "/aws/lambda/test-prefix-amr-isolate-deduper",
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

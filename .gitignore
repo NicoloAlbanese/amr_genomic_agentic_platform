@@ -1,0 +1,17 @@
+node_modules/
+cdk.out/
+cdk.out.slats/
+cdk.context.json
+coverage/
+dist/
+build/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.so
+.env
+.vscode/
+
+AGENTS.md
+progress.yml
+context/

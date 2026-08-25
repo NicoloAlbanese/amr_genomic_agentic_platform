@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="helix" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b06cff"/>
+      <stop offset="30%" stop-color="#2fe6d6"/>
+      <stop offset="60%" stop-color="#f5e663"/>
+      <stop offset="100%" stop-color="#ff5da2"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" fill="#000000"/>
+  <g fill="none" stroke="url(#helix)" stroke-width="2.6" stroke-linecap="round">
+    <path d="M22 6 C42 18, 42 28, 22 40 C2 52, 2 62, 22 74"/>
+    <path d="M42 6 C22 18, 22 28, 42 40 C62 52, 62 62, 42 74"/>
+  </g>
+  <g stroke="url(#helix)" stroke-width="2.2" stroke-linecap="round" opacity="0.9">
+    <line x1="25" y1="12" x2="39" y2="12"/>
+    <line x1="30" y1="19" x2="34" y2="19"/>
+    <line x1="30" y1="27" x2="34" y2="27"/>
+    <line x1="25" y1="34" x2="39" y2="34"/>
+    <line x1="21" y1="46" x2="43" y2="46"/>
+    <line x1="26" y1="54" x2="38" y2="54"/>
+  </g>
+</svg>
